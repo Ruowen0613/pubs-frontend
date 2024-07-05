@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthorsService } from '../author.service';
+import { Router } from '@angular/router';
 import {RouterModule} from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-author-list',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, MatIconModule],
   templateUrl: './author-list.component.html',
   styleUrl: './author-list.component.css'
 })
@@ -14,7 +16,7 @@ import {RouterModule} from '@angular/router';
 export class AuthorListComponent implements OnInit {
   authors: any[] = [];
 
-  constructor(private authorsService: AuthorsService) {}
+  constructor(private authorsService: AuthorsService, private router: Router) {}
 
   ngOnInit(): void {
     this.fetchAuthors();
@@ -31,6 +33,10 @@ export class AuthorListComponent implements OnInit {
           // Handle error
         }
       );
+  }
+
+  editAuthor(au_id: number): void {
+    this.router.navigate(['/edit-author', au_id]);
   }
 
   deleteAuthor(au_id: string): void {

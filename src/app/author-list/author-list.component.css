@@ -1,4 +1,10 @@
 /* src/app/author-list/author-list.component.css */
+h1 {
+    font-family: Arial, sans-serif; 
+    font-size: 36px; 
+    font-weight: bold; 
+    text-align: center; 
+}
 
 .author-table {
     width: 100%;

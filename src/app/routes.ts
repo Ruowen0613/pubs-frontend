@@ -7,7 +7,8 @@ import { AuthorDetailComponent } from './author-detail/author-detail.component';
 const routeConfig: Routes = [
   { path: '', redirectTo: '/authors', pathMatch: 'full' },
   { path: 'authors', component: AuthorListComponent },
-  { path: 'authors/:id', component: AuthorDetailComponent }
+  //{ path: 'authors/:id', component: AuthorDetailComponent },
+  { path: 'edit-author/:id', component: AuthorDetailComponent }
 ];
 
 export default routeConfig;

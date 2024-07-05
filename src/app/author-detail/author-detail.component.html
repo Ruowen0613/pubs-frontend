@@ -1,46 +1,42 @@
-<!-- src/app/author-detail/author-detail.component.html -->
+<h2 style="text-align: center;">Edit Author Details</h2>
 
-<div *ngIf="author">
-    <h2>{{ author.au_fname }} {{ author.au_lname }}</h2>
-    <table class="styled-table">
-      <tr>
-        <td><strong>ID:</strong></td>
-        <td>{{ author.au_id }}</td>
-      </tr>
-      <tr>
-        <td><strong>First Name:</strong></td>
-        <td>{{ author.au_fname }}</td>
-      </tr>
-      <tr>
-        <td><strong>Last Name:</strong></td>
-        <td>{{ author.au_lname }}</td>
-      </tr>
-      <tr>
-        <td><strong>Phone:</strong></td>
-        <td>{{ author.phone }}</td>
-      </tr>
-      <tr>
-        <td><strong>Address:</strong></td>
-        <td>{{ author.address }}</td>
-      </tr>
-      <tr>
-        <td><strong>City:</strong></td>
-        <td>{{ author.city }}</td>
-      </tr>
-      <tr>
-        <td><strong>State:</strong></td>
-        <td>{{ author.state }}</td>
-      </tr>
-      <tr>
-        <td><strong>Zip Code:</strong></td>
-        <td>{{ author.zip }}</td>
-      </tr>
-      <tr>
-        <td><strong>Contract:</strong></td>
-        <td>{{ author.contract }}</td>
-      </tr>
-      <!-- Add more fields as necessary -->
-      
-    </table>
+<form (ngSubmit)="saveAuthor()">
+  <div>
+    <label for="au_id">ID:</label>
+    <input type="text" id="au_id" name="au_id" [(ngModel)]="author.au_id" disabled>
   </div>
-  
+  <div>
+    <label for="au_lname">Last Name:</label>
+    <input type="text" id="au_lname" name="au_lname" [(ngModel)]="author.au_lname">
+  </div>
+  <div>
+    <label for="au_fname">First Name:</label>
+    <input type="text" id="au_fname" name="au_fname" [(ngModel)]="author.au_fname">
+  </div>
+  <div>
+    <label for="phone">Phone:</label>
+    <input type="text" id="phone" name="phone" [(ngModel)]="author.phone">
+  </div>
+  <div>
+    <label for="address">Address:</label>
+    <input type="text" id="address" name="address" [(ngModel)]="author.address">
+  </div>
+  <div>
+    <label for="city">City:</label>
+    <input type="text" id="city" name="city" [(ngModel)]="author.city">
+  </div>
+  <div>
+    <label for="state">State:</label>
+    <input type="text" id="state" name="state" [(ngModel)]="author.state">
+  </div>
+  <div>
+    <label for="zip">Zip:</label>
+    <input type="text" id="zip" name="zip" [(ngModel)]="author.zip">
+  </div>
+  <div>
+    <label for="contract">Contract:</label>
+    <input type="text" id="contract" name="contract" [(ngModel)]="author.contract">
+  </div>
+
+  <button type="submit">Save</button>
+</form>

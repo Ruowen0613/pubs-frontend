@@ -4,11 +4,18 @@ import { ActivatedRoute } from '@angular/router';
 import { AuthorsService } from '../author.service';
 import {RouterModule} from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-author-detail',
   standalone: true,
-  imports: [RouterModule, CommonModule],
+  imports: [
+    CommonModule,
+    RouterModule,
+    ReactiveFormsModule,
+    FormsModule
+  ],
   templateUrl: './author-detail.component.html',
   styleUrl: './author-detail.component.css'
 })
@@ -29,6 +36,13 @@ export class AuthorDetailComponent implements OnInit {
       this.author = data;
       //this.AuthorId=String(this.author.au_id)
 
+    });
+  }
+
+  saveAuthor(): void {
+    this.authorService.updateAuthor(this.author.au_id, this.author).subscribe(() => {
+      alert('Author updated successfully');
+      window.close(); // Close the window after saving
     });
   }
 }
