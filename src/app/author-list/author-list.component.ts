@@ -33,8 +33,18 @@ export class AuthorListComponent implements OnInit {
       );
   }
 
-  openAuthorDetails(authorId: string): void {
-    const url = `https://yourdomain.com/author-details/${authorId}`;
-    window.open(url, '_blank');
+  deleteAuthor(au_id: string): void {
+    if (confirm('Are you sure you want to delete this author?')) {
+      this.authorsService.deleteAuthor(au_id).subscribe(
+        () => {
+          console.log('Author deleted successfully');
+          // Refresh the list after deletion
+          this.fetchAuthors();
+        },
+        error => {
+          console.error('Error deleting author:', error);
+        }
+      );
+    }
   }
 }

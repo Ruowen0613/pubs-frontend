@@ -16,7 +16,11 @@ export class AuthorsService {
     return this.http.get<any[]>(this.apiUrl);
   }
 
-  getAuthor(id: string): Observable<any> {
+  getAuthorByID(id: string): Observable<any> {
     return this.http.get(`${this.apiUrl}/${id}`);
+  }
+
+  deleteAuthor(au_id: string): Observable<any> {
+    return this.http.delete<any>(`${this.apiUrl}/${au_id}`);
   }
 }

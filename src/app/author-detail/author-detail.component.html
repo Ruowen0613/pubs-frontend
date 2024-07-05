@@ -1,1 +1,46 @@
-<p>author-detail works!</p>
+<!-- src/app/author-detail/author-detail.component.html -->
+
+<div *ngIf="author">
+    <h2>{{ author.au_fname }} {{ author.au_lname }}</h2>
+    <table class="styled-table">
+      <tr>
+        <td><strong>ID:</strong></td>
+        <td>{{ author.au_id }}</td>
+      </tr>
+      <tr>
+        <td><strong>First Name:</strong></td>
+        <td>{{ author.au_fname }}</td>
+      </tr>
+      <tr>
+        <td><strong>Last Name:</strong></td>
+        <td>{{ author.au_lname }}</td>
+      </tr>
+      <tr>
+        <td><strong>Phone:</strong></td>
+        <td>{{ author.phone }}</td>
+      </tr>
+      <tr>
+        <td><strong>Address:</strong></td>
+        <td>{{ author.address }}</td>
+      </tr>
+      <tr>
+        <td><strong>City:</strong></td>
+        <td>{{ author.city }}</td>
+      </tr>
+      <tr>
+        <td><strong>State:</strong></td>
+        <td>{{ author.state }}</td>
+      </tr>
+      <tr>
+        <td><strong>Zip Code:</strong></td>
+        <td>{{ author.zip }}</td>
+      </tr>
+      <tr>
+        <td><strong>Contract:</strong></td>
+        <td>{{ author.contract }}</td>
+      </tr>
+      <!-- Add more fields as necessary -->
+      
+    </table>
+  </div>
+  

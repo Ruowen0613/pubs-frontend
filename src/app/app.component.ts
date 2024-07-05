@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { RouterModule } from '@angular/router';
+import { AuthorListComponent } from './author-list/author-list.component';
 
 @Component({
   selector: 'app-root',

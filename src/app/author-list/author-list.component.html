@@ -1,4 +1,4 @@
-<h1 style="text-align: center;">Authors List</h1>
+<h1 style="text-align: center;">Author List</h1>
 
 <table class="author-table">
   <thead>
@@ -6,7 +6,14 @@
       <th>ID</th>
       <th>Last Name</th>
       <th>First Name</th>
-      <th>Actions</th>
+      <th>Phone</th>
+      <th>Address</th>
+      <th>City</th>
+      <th>State</th>
+      <th>Zip</th>
+      <th>Contract</th>
+      <th>Edit</th>
+      <th>Delete</th>
     </tr>
   </thead>
   <tbody>
@@ -14,7 +21,14 @@
       <td>{{ author.au_id }}</td>
       <td>{{ author.au_lname }}</td>
       <td>{{ author.au_fname }}</td>
-      <td><a [routerLink]="['/authors', author._id]" class="details-link">View Details</a></td>
+      <td>{{ author.phone }}</td>
+      <td>{{ author.address }}</td>
+      <td>{{ author.city }}</td>
+      <td>{{ author.state }}</td>
+      <td>{{ author.zip }}</td>
+      <td>{{ author.contract }}</td>
+      <td><a [routerLink]="['/authors', author.au_id]" class="details-link">View Details</a></td>
+      <td><button (click)="deleteAuthor(author.au_id)">Delete</button></td>
     </tr>
   </tbody>
 </table>

@@ -1,0 +1,21 @@
+/* src/app/author-detail/author-detail.component.css */
+
+.styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  .styled-table, .styled-table th, .styled-table td {
+    border: 1px solid black;
+  }
+  
+  .styled-table th, .styled-table td {
+    padding: 10px;
+    text-align: left;
+  }
+  
+  .styled-table th {
+    background-color: #f2f2f2;
+  }
+  
