@@ -1,0 +1,42 @@
+<h2>Add New Author</h2>
+
+<form (ngSubmit)="saveAuthor()">
+  <div>
+    <label for="au_id">ID:</label>
+    <input type="text" id="au_id" name="au_id" [(ngModel)]="author.au_id" required>
+  </div>
+  <div>
+    <label for="au_lname">Last Name:</label>
+    <input type="text" id="au_lname" name="au_lname" [(ngModel)]="author.au_lname" required>
+  </div>
+  <div>
+    <label for="au_fname">First Name:</label>
+    <input type="text" id="au_fname" name="au_fname" [(ngModel)]="author.au_fname" required>
+  </div>
+  <div>
+    <label for="phone">Phone:</label>
+    <input type="text" id="phone" name="phone" [(ngModel)]="author.phone">
+  </div>
+  <div>
+    <label for="address">Address:</label>
+    <input type="text" id="address" name="address" [(ngModel)]="author.address">
+  </div>
+  <div>
+    <label for="city">City:</label>
+    <input type="text" id="city" name="city" [(ngModel)]="author.city">
+  </div>
+  <div>
+    <label for="state">State:</label>
+    <input type="text" id="state" name="state" [(ngModel)]="author.state">
+  </div>
+  <div>
+    <label for="zip">Zip:</label>
+    <input type="text" id="zip" name="zip" [(ngModel)]="author.zip">
+  </div>
+  <div>
+    <label for="contract">Contract:</label>
+    <input type="text" id="contract" name="contract" [(ngModel)]="author.contract">
+  </div>
+
+  <button type="submit">Save</button>
+</form>

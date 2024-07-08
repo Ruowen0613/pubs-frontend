@@ -6,6 +6,25 @@ h1 {
     text-align: center; 
 }
 
+.add-author-container {
+    text-align: right;
+    margin-bottom: 20px;
+}
+  
+.add-author-button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+}
+  
+.add-author-button:hover {
+    background-color: #0056b3;
+}
+
 .author-table {
     width: 100%;
     border-collapse: collapse;

@@ -39,6 +39,10 @@ export class AuthorListComponent implements OnInit {
     this.router.navigate(['/edit-author', au_id]);
   }
 
+  goToAddAuthor(): void {
+    this.router.navigate(['/add-author']);
+  }
+
   deleteAuthor(au_id: string): void {
     if (confirm('Are you sure you want to delete this author?')) {
       this.authorsService.deleteAuthor(au_id).subscribe(

@@ -27,6 +27,11 @@ export class AuthorsService {
     return this.http.put(`${this.apiUrl}/${id}`, author)
   }
 
+  //add new author
+  addAuthor(author: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}`, author);
+  }
+
   //delete author by id
   deleteAuthor(au_id: string): Observable<any> {
     return this.http.delete<any>(`${this.apiUrl}/${au_id}`);
