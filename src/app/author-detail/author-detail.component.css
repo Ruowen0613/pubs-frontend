@@ -4,7 +4,13 @@ h2 {
     font-weight: bold; 
     text-align: center; 
 }
-  
+
+.error-message {
+    color: red;
+    font-size: 0.9em;
+    margin-top: 0.5em;
+}
+
 form {
     max-width: 500px;
     margin: 0 auto;

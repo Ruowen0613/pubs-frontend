@@ -47,14 +47,15 @@ export class AuthorListComponent implements OnInit {
     if (confirm('Are you sure you want to delete this author?')) {
       this.authorsService.deleteAuthor(au_id).subscribe(
         () => {
-          console.log('Author deleted successfully');
-          // Refresh the list after deletion
-          this.fetchAuthors();
+          this.authors = this.authors.filter(author => author.au_id !== au_id);
+          alert('Author deleted successfully');
         },
         error => {
           console.error('Error deleting author:', error);
+          alert(`Failed to delete author: ${error.message || error}`);
         }
       );
     }
   }
+  
 }
