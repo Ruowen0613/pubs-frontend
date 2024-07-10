@@ -48,8 +48,8 @@ export class AuthorDetailComponent implements OnInit {
       this.authorId = params['id'];
     });
   }
+
   ngOnInit(): void {
-    // Optionally, you can load author details using authorId from a service
     this.loadAuthorDetails();
   }
 
@@ -82,6 +82,9 @@ export class AuthorDetailComponent implements OnInit {
   saveAuthor(): void {
     if (this.authorForm.valid) {
       const authorData = this.authorForm.value;
+      if (!authorData.zip) {
+        authorData.zip = null;  // Ensure zip is null if not provided
+      }
       // Pass both authorId and authorData to updateAuthor function
       this.authorService.updateAuthor(this.authorId, authorData)
         .subscribe(

@@ -8,7 +8,6 @@ import { AddAuthorComponent } from './add-author/add-author.component';
 const routeConfig: Routes = [
   { path: '', redirectTo: '/authors', pathMatch: 'full' },
   { path: 'authors', component: AuthorListComponent },
-  //{ path: 'authors/:id', component: AuthorDetailComponent },
   { path: 'edit-author/:id', component: AuthorDetailComponent },
   { path: 'add-author', component: AddAuthorComponent }
 ];

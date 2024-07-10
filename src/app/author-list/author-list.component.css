@@ -31,22 +31,12 @@ h1 {
     margin-top: 20px;
   }
   
-  .author-table th, .author-table td {
+.author-table th, .author-table td {
     border: 1px solid #ddd;
     padding: 8px;
     text-align: left;
-  }
+}
   
-  .author-table th {
+.author-table th {
     background-color: #f2f2f2;
-  }
-  
-  .details-link {
-    color: #007bff;
-    text-decoration: none;
-  }
-  
-  .details-link:hover {
-    text-decoration: underline;
-  }
-  
+}
