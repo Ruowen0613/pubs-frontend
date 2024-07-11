@@ -12,17 +12,14 @@ h1 {
 }
   
 .add-author-button {
-    background-color: #007bff;
-    color: white;
     padding: 10px 20px;
-    border: none;
     border-radius: 4px;
     font-size: 16px;
     cursor: pointer;
 }
   
 .add-author-button:hover {
-    background-color: #0056b3;
+    background-color: #07284b;
 }
 
 .author-table {
