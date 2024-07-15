@@ -16,5 +16,5 @@ import { AuthorListComponent } from './author-list/author-list.component';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  title = 'db-app';
+  //title = 'db-app';
 }

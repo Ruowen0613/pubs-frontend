@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthorsService } from '../author.service';
 import { Router } from '@angular/router';
@@ -7,6 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-author-list',
@@ -17,7 +18,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
       MatIconModule, 
       MatTableModule, 
       MatButtonModule, 
-      MatToolbarModule
+      MatToolbarModule,
+      MatPaginatorModule
   ],
   templateUrl: './author-list.component.html',
   styleUrl: './author-list.component.css'
@@ -30,6 +32,8 @@ export class AuthorListComponent implements OnInit {
     'city', 'state', 'zip', 'contract', 'actions'
   ];
 
+  @ViewChild(MatPaginator) paginator?: MatPaginator;
+  
   constructor(private authorsService: AuthorsService, private router: Router) {}
 
   ngOnInit(): void {
@@ -41,6 +45,10 @@ export class AuthorListComponent implements OnInit {
       .subscribe(
         (data) => {
           this.authors.data = data;
+          if (this.paginator) {
+            this.authors.paginator = this.paginator;
+            this.paginator!.pageSize = 10;
+          }
         },
         (error) => {
           console.error('Error fetching authors:', error);
