@@ -3,6 +3,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Author } from './author.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -23,17 +24,17 @@ export class AuthorsService {
   }
 
   //update author by id
-  updateAuthor(id: string, author: any): Observable<any> {
+  updateAuthor(id: string, author: Author): Observable<any> {
     return this.http.put(`${this.apiUrl}/${id}`, author)
   }
 
   //add new author
-  addAuthor(author: any): Observable<any> {
+  addAuthor(author: Author): Observable<any> {
     return this.http.post(`${this.apiUrl}`, author);
   }
 
   //delete author by id
   deleteAuthor(au_id: string): Observable<any> {
-    return this.http.delete<any>(`${this.apiUrl}/${au_id}`);
+    return this.http.delete(`${this.apiUrl}/${au_id}`);
   }
 }

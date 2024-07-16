@@ -2,12 +2,13 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthorsService } from '../author.service';
 import { Router } from '@angular/router';
-import {RouterModule} from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { Author } from '../author.interface';
 
 @Component({
   selector: 'app-author-list',
@@ -26,7 +27,7 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 })
 
 export class AuthorListComponent implements OnInit {
-  authors = new MatTableDataSource<any>();  // Use MatTableDataSource for Angular Material Table
+  authors = new MatTableDataSource<Author>();  // Use MatTableDataSource for Angular Material Table
   displayedColumns: string[] = [
     'au_id', 'au_lname', 'au_fname', 'phone', 'address', 
     'city', 'state', 'zip', 'contract', 'actions'
@@ -43,11 +44,10 @@ export class AuthorListComponent implements OnInit {
   fetchAuthors(): void {
     this.authorsService.getAuthors()
       .subscribe(
-        (data) => {
+        (data: Author[]) => {
           this.authors.data = data;
           if (this.paginator) {
             this.authors.paginator = this.paginator;
-            this.paginator!.pageSize = 10;
           }
         },
         (error) => {
