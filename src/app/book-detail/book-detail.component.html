@@ -1,1 +1,71 @@
-<p>book-detail works!</p>
+<mat-toolbar>
+    <h2>Book Detail</h2>
+    <button mat-icon (click)="toggleEditMode()" class="edit-button">
+      {{ editMode ? 'Cancel' : 'Edit' }}
+    </button>
+</mat-toolbar>
+
+
+<form  [formGroup]="bookForm" (ngSubmit)="saveBook()">
+  <div>
+    <label for="title_id">ID:</label>
+    <input *ngIf="editMode" type="text" id="title_id" name="title_id" formControlName="title_id">
+    <span *ngIf="!editMode">{{ book.title_id }}</span>
+  </div>
+  <div>
+    <label for="title">Title:</label>
+    <input *ngIf="editMode" type="text" id="title" formControlName="title">
+    <span *ngIf="!editMode">{{ book.title }}</span>
+    <div *ngIf="editMode && bookForm.get('title')?.invalid && (bookForm.get('title')?.dirty || bookForm.get('title')?.touched)">
+      <div *ngIf="bookForm.get('title')?.errors?.['required']" class="error-message">Title is required.</div>
+    </div>
+  </div>
+  <div>
+    <label for="type">Type:</label>
+    <input *ngIf="editMode" type="text" id="type" formControlName="type">
+    <span *ngIf="!editMode">{{ book.type }}</span>
+    <div *ngIf="editMode && bookForm.get('type')?.invalid && (bookForm.get('type')?.dirty || bookForm.get('type')?.touched)">
+      <div *ngIf="bookForm.get('type')?.errors?.['required']" class="error-message">Type is required.</div>
+    </div>
+  </div>
+  <div>
+    <label for="pub_id">Publisher ID:</label>
+    <input *ngIf="editMode" type="text" id="pub_id" formControlName="pub_id">
+    <span *ngIf="!editMode">{{ book.pub_id }}</span>
+  </div>
+  <div>
+    <label for="price">Price:</label>
+    <input *ngIf="editMode" type="text" id="price" formControlName="price">
+    <span *ngIf="!editMode">{{ book.price }}</span>
+  </div>
+  <div>
+    <label for="advance">Advance:</label>
+    <input *ngIf="editMode" type="text" id="advance" formControlName="advance">
+    <span *ngIf="!editMode">{{ book.advance }}</span>
+  </div>
+  <div>
+    <label for="royalty">Royalty:</label>
+    <input *ngIf="editMode" type="text" id="royalty" formControlName="royalty">
+    <span *ngIf="!editMode">{{ book.royalty }}</span>
+  </div>
+  <div>
+    <label for="ytd_sales">Year-to-date sales:</label>
+    <input *ngIf="editMode" type="text" id="ytd_sales" formControlName="ytd_sales">
+    <span *ngIf="!editMode">{{ book.ytd_sales }}</span>
+  </div>
+  <div>
+    <label for="notes">Notes:</label>
+    <input *ngIf="editMode" type="text" id="notes" formControlName="notes">
+    <span *ngIf="!editMode">{{ book.notes }}</span>
+  </div>
+  <div>
+    <label for="pubdate">Pubdate:</label>
+    <input *ngIf="editMode" type="text" id="pubdate" formControlName="pubdate">
+    <span *ngIf="!editMode">{{ book.pubdate }}</span>
+    <div *ngIf="editMode && bookForm.get('pubdate')?.invalid && (bookForm.get('pubdate')?.dirty || bookForm.get('pubdate')?.touched)">
+      <div *ngIf="bookForm.get('pubdate')?.errors?.['required']" class="error-message">Pubdate is required.</div>
+    </div>
+  </div>
+
+  <button *ngIf="editMode" type="submit">Save</button>
+</form>

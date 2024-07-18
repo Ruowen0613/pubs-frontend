@@ -29,7 +29,7 @@ import { Author } from '../author.interface';
 export class AuthorListComponent implements OnInit {
   authors = new MatTableDataSource<Author>();  // Use MatTableDataSource for Angular Material Table
   displayedColumns: string[] = [
-    'au_id', 'au_lname', 'au_fname', 'phone', 'address', 
+    'au_id', 'name', 'phone', 'address', 
     'city', 'state', 'zip', 'contract', 'actions'
   ];
 

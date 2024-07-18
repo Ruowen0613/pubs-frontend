@@ -1,62 +1,77 @@
-<h2 style="text-align: center;">Edit Author Details</h2>
+<mat-toolbar>
+    <h2>Author Detail</h2>
+    <button mat-button (click)="toggleEditMode()" class="edit-button">
+      {{ editMode ? 'Cancel' : 'Edit' }}
+    </button>
+</mat-toolbar>
 
-<form [formGroup]="authorForm" (ngSubmit)="saveAuthor()">
+
+<form  [formGroup]="authorForm" (ngSubmit)="saveAuthor()">
   <div>
     <label for="au_id">ID:</label>
-    <input type="text" id="au_id" name="au_id" formControlName="au_id">
+    <input *ngIf="editMode" type="text" id="au_id" name="au_id" formControlName="au_id">
+    <span *ngIf="!editMode">{{ author.au_id }}</span>
   </div>
   <div>
     <label for="au_lname">Last Name:</label>
-    <input type="text" id="au_lname" formControlName="au_lname">
-    <div *ngIf="authorForm.get('au_lname')?.invalid && (authorForm.get('au_lname')?.dirty || authorForm.get('au_lname')?.touched)">
+    <input *ngIf="editMode" type="text" id="au_lname" formControlName="au_lname">
+    <span *ngIf="!editMode">{{ author.au_lname }}</span>
+    <div *ngIf="editMode && authorForm.get('au_lname')?.invalid && (authorForm.get('au_lname')?.dirty || authorForm.get('au_lname')?.touched)">
       <div *ngIf="authorForm.get('au_lname')?.errors?.['required']" class="error-message">Last Name is required.</div>
     </div>
   </div>
   <div>
     <label for="au_fname">First Name:</label>
-    <input type="text" id="au_fname" formControlName="au_fname">
-    <div *ngIf="authorForm.get('au_fname')?.invalid && (authorForm.get('au_fname')?.dirty || authorForm.get('au_fname')?.touched)">
+    <input *ngIf="editMode" type="text" id="au_fname" formControlName="au_fname">
+    <span *ngIf="!editMode">{{ author.au_fname }}</span>
+    <div *ngIf="editMode && authorForm.get('au_fname')?.invalid && (authorForm.get('au_fname')?.dirty || authorForm.get('au_fname')?.touched)">
       <div *ngIf="authorForm.get('au_fname')?.errors?.['required']" class="error-message">First Name is required.</div>
     </div>
   </div>
   <div>
     <label for="phone">Phone:</label>
-    <input type="text" id="phone" formControlName="phone">
-    <div *ngIf="authorForm.get('phone')?.invalid && (authorForm.get('phone')?.dirty || authorForm.get('phone')?.touched)">
+    <input *ngIf="editMode" type="text" id="phone" formControlName="phone">
+    <span *ngIf="!editMode">{{ author.phone }}</span>
+    <div *ngIf="editMode && authorForm.get('phone')?.invalid && (authorForm.get('phone')?.dirty || authorForm.get('phone')?.touched)">
       <div *ngIf="authorForm.get('phone')?.errors?.['required']" class="error-message">Phone is required.</div>
       <div *ngIf="authorForm.controls['phone']?.errors?.['maxlength']" class="error-message">Phone must be a maximum of 12 characters long.</div>
     </div>
   </div>
   <div>
     <label for="address">Address:</label>
-    <input type="text" id="address" formControlName="address">
+    <input *ngIf="editMode" type="text" id="address" formControlName="address">
+    <span *ngIf="!editMode">{{ author.address }}</span>
   </div>
   <div>
     <label for="city">City:</label>
-    <input type="text" id="city" formControlName="city">
+    <input *ngIf="editMode" type="text" id="city" formControlName="city">
+    <span *ngIf="!editMode">{{ author.city }}</span>
   </div>
   <div>
     <label for="state">State:</label>
-    <input type="text" id="state" formControlName="state">
-    <div *ngIf="authorForm.get('state')?.invalid && (authorForm.get('state')?.dirty || authorForm.get('state')?.touched)">
-    <div *ngIf="authorForm.get('state')?.errors?.['maxlength']" class="error-message">State must be 2 characters long.</div>
-    <div *ngIf="authorForm.controls['phone']?.errors?.['maxlength']" class="error-message">State must be 12 characters long.</div>
+    <input *ngIf="editMode" type="text" id="state" formControlName="state">
+    <span *ngIf="!editMode">{{ author.state }}</span>
+    <div *ngIf="editMode && authorForm.get('state')?.invalid && (authorForm.get('state')?.dirty || authorForm.get('state')?.touched)">
+        <div *ngIf="authorForm.get('state')?.errors?.['maxlength']" class="error-message">State must be 2 characters long.</div>
+        <div *ngIf="authorForm.controls['phone']?.errors?.['maxlength']" class="error-message">State must be 12 characters long.</div>
     </div>
   </div>
   <div>
     <label for="zip">Zip:</label>
-    <input type="text" id="zip" formControlName="zip">
-    <div *ngIf="authorForm.get('zip')?.invalid && (authorForm.get('zip')?.dirty || authorForm.get('zip')?.touched)">
+    <input *ngIf="editMode" type="text" id="zip" formControlName="zip">
+    <span *ngIf="!editMode">{{ author.zip }}</span>
+    <div *ngIf="editMode && authorForm.get('zip')?.invalid && (authorForm.get('zip')?.dirty || authorForm.get('zip')?.touched)">
       <div *ngIf="authorForm.get('zip')?.errors?.['pattern']" class="error-message">Zip must be a 5-digit number.</div>
     </div>
   </div>
   <div>
     <label for="contract">Contract:</label>
-    <input type="checkbox" id="contract" formControlName="contract">
-    <div *ngIf="authorForm.get('contract')?.invalid && (authorForm.get('contract')?.dirty || authorForm.get('contract')?.touched)">
+    <input *ngIf="editMode" type="checkbox" id="contract" formControlName="contract">
+    <input *ngIf="!editMode" type="checkbox" id="contract" [checked]="author.contract" disabled>
+    <div *ngIf="editMode && authorForm.get('contract')?.invalid && (authorForm.get('contract')?.dirty || authorForm.get('contract')?.touched)">
       <div *ngIf="authorForm.get('contract')?.errors?.['required']" class="error-message">Contract is required.</div>
     </div>
   </div>
 
-  <button type="submit">Save</button>
+  <button *ngIf="editMode" type="submit">Save</button>
 </form>

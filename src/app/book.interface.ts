@@ -4,12 +4,12 @@ export interface Book {
     title_id: number;
     title: string;
     type: string;
-    pub_id: string;
-    price: string;
-    advance: string;
-    royalty: string;
-    tyd_sales: string;
+    pub_id: number;
+    price: number;
+    advance: number;
+    royalty: number;
+    ytd_sales: number;
     notes: string;
-    pubdate: string
-  }
+    pubdate: Date;
+}
   

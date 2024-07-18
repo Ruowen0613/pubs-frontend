@@ -1,9 +1,28 @@
-h2 {
-    font-family: Arial, sans-serif; 
-    font-size: 24px; 
-    font-weight: bold; 
-    text-align: center; 
+.edit-button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-left: 50px;
 }
+
+input, span {
+    border: none;
+    border-bottom: 2px solid #ccc;
+    padding: 4px 0;
+    display: inline-block;
+    width: calc(100% - 8px); /* Adjust the width so that it fits well with padding */
+    box-sizing: border-box; /* Ensures padding doesn't affect the total width */
+  }
+  
+  input:focus {
+    border-bottom: 2px solid #007bff; /* Changes border color when focused */
+    outline: none; /* Removes default outline */
+  }
+  
 
 .error-message {
     color: red;

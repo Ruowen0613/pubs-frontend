@@ -1,10 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, makeStateKey } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuthorsService } from '../author.service';
 import {RouterModule} from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { MatButtonModule } from '@angular/material/button';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { Author } from '../author.interface';
 
 @Component({
   selector: 'app-author-detail',
@@ -13,16 +16,19 @@ import { Router } from '@angular/router';
     CommonModule,
     RouterModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    MatButtonModule,
+    MatToolbarModule
   ],
   templateUrl: './author-detail.component.html',
   styleUrl: './author-detail.component.css'
 })
 
 export class AuthorDetailComponent implements OnInit {
-  author: any;
+  author!: Author;
   authorForm: FormGroup;
   authorId!: string;
+  editMode: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -53,11 +59,18 @@ export class AuthorDetailComponent implements OnInit {
     this.loadAuthorDetails();
   }
 
+  toggleEditMode(): void {
+    this.editMode = !this.editMode;
+    if (!this.editMode) {
+      this.authorForm.patchValue(this.author);  // Reset form to original values
+    }
+  }
+
   loadAuthorDetails(): void {
     // Example: Fetch author details using authorId from your service
     this.authorService.getAuthorByID(this.authorId)
       .subscribe(
-        (author: any) => {
+        (author: Author) => {
           this.author = author;
           // Patch form values with fetched author details
           this.authorForm.patchValue({
