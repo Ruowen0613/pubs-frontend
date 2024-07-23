@@ -1,1 +1,130 @@
-<p>add-book works!</p>
+<h2 style="text-align: center;">Add New Book</h2>
+
+<form [formGroup]="addBookForm" (ngSubmit)="saveBook()">
+  <mat-form-field appearance="fill">
+    <mat-label>ID</mat-label>
+    <input matInput formControlName="title_id" maxlength="6">
+    <mat-error *ngIf="addBookForm.controls['title_id'].invalid && (addBookForm.controls['title_id'].dirty || addBookForm.controls['title_id'].touched)">
+      <ng-container *ngIf="addBookForm.controls['title_id']?.errors?.['required']">ID is required.</ng-container>
+      <ng-container *ngIf="addBookForm.controls['title_id']?.errors?.['maxlength']">ID must be 6 characters long.</ng-container>
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Title</mat-label>
+    <input matInput formControlName="title">
+    <mat-error *ngIf="addBookForm.get('title')?.invalid && (addBookForm.get('title')?.dirty || addBookForm.get('title')?.touched)">
+      <ng-container *ngIf="addBookForm.get('title')?.errors?.['required']">Title is required.</ng-container>
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Type</mat-label>
+    <input matInput formControlName="type">
+    <mat-error *ngIf="addBookForm.get('type')?.invalid && (addBookForm.get('type')?.dirty || addBookForm.get('type')?.touched)">
+      <ng-container *ngIf="addBookForm.get('type')?.errors?.['required']">Type is required.</ng-container>
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Price</mat-label>
+    <input matInput formControlName="price">
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" class="custom-form-field">
+    <mat-label>Author</mat-label>
+    <input 
+        type="text" 
+        matInput 
+        [matAutocomplete]="auto" 
+        formControlName="authorName" 
+        (blur)="onAuthorInput()"
+        (focus)="onDropdownFocus()"
+        placeholder="Choose the author from below or create a new one"
+    >
+    <mat-autocomplete #auto="matAutocomplete">
+      <mat-option 
+        *ngFor="let author of filteredAuthors | async" 
+        [value]="author.fullName" 
+        (mousedown)="onDropdownInteraction()"
+      >
+        {{ author.fullName }}
+      </mat-option>
+    </mat-autocomplete>
+    <div *ngIf="authorNotFound" class="error-message">Author not found. <button mat-button color="primary" (click)="navigateToAddAuthor()">Create New Author</button></div>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Author Order</mat-label>
+    <input matInput formControlName="au_ord">
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Royalty Percentage</mat-label>
+    <input matInput formControlName="royaltyper">
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" class="custom-form-field">
+    <mat-label>Publisher ID</mat-label>
+    <input 
+        type="text" 
+        matInput 
+        [matAutocomplete]="auto" 
+        formControlName="authorName" 
+        (blur)="onAuthorInput()"
+        (focus)="onDropdownFocus()"
+        placeholder="Choose the author from below or create a new one"
+    >
+    <mat-autocomplete #auto="matAutocomplete">
+      <mat-option 
+        *ngFor="let author of filteredAuthors | async" 
+        [value]="author.fullName" 
+        (mousedown)="onDropdownInteraction()"
+      >
+        {{ author.fullName }}
+      </mat-option>
+    </mat-autocomplete>
+    <div *ngIf="authorNotFound" class="error-message">Author not found. <button mat-button color="primary" (click)="navigateToAddAuthor()">Create New Author</button></div>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Publisher ID</mat-label>
+    <input matInput formControlName="pub_id" maxlength="4">
+    <mat-error *ngIf="addBookForm.controls['pub_id'].invalid && (addBookForm.controls['pub_id'].dirty || addBookForm.controls['pub_id'].touched)">
+      <ng-container *ngIf="addBookForm.controls['pub_id']?.errors?.['maxlength']">Publisher ID must be 4 characters long.</ng-container>
+    </mat-error>
+  </mat-form-field>
+
+ 
+
+  <mat-form-field appearance="fill">
+    <mat-label>Advance</mat-label>
+    <input matInput formControlName="advance">
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Royalty</mat-label>
+    <input matInput formControlName="royalty">
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Year-to-date Sales</mat-label>
+    <input matInput formControlName="ytd_sales">
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Notes</mat-label>
+    <input matInput formControlName="notes">
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Publication Date</mat-label>
+    <input matInput formControlName="pubdate" type="date">
+    <mat-error *ngIf="addBookForm.controls['pubdate'].invalid && (addBookForm.controls['pubdate'].dirty || addBookForm.controls['pubdate'].touched)">
+      <ng-container *ngIf="addBookForm.controls['pubdate']?.errors?.['required']">Publication Date is required.</ng-container>
+    </mat-error>
+  </mat-form-field>
+  
+
+  <button mat-raised-button color="primary" type="submit">Save</button>
+</form>
