@@ -2,12 +2,23 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { BooksService } from '../book.service';
+import { PublishersService } from '../publisher.service';
+import { AuthorsService } from '../author.service';
 import { Book } from '../book.interface';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatAutocompleteModule, MatAutocompleteTrigger } from '@angular/material/autocomplete';
+import { MatOptionModule } from '@angular/material/core';
+import { MatDatepickerModule, matDatepickerAnimations } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 import { Router } from '@angular/router';
+import { Publisher } from '../publisher.interface';
+import { Author } from '../author.interface';
 
 @Component({
   selector: 'app-book-detail',
@@ -19,7 +30,14 @@ import { Router } from '@angular/router';
     FormsModule,
     MatButtonModule,
     MatToolbarModule,
-    MatIconModule
+    MatIconModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatAutocompleteModule,
+    MatOptionModule,
+    MatSelectModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
   templateUrl: './book-detail.component.html',
   styleUrl: './book-detail.component.css'
@@ -29,24 +47,30 @@ export class BookDetailComponent implements OnInit{
   bookForm!: FormGroup;
   bookId !: string;
   editMode: boolean = false;
+  authors: Author[] = [];
+  publishers: Publisher[] = [];
   
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private booksService: BooksService,
+    private authorsService: AuthorsService,
+    private publishersService: PublishersService,
     private router: Router
   ) {
     this.bookForm = this.formBuilder.group({
       title_id: [{ value: '', disabled: true }],
       title: ['', Validators.required],
       type: ['', Validators.required],
-      pub_id: [{ value: '', disabled: true }],
+      pub_id: [''],
       price: [''],
       advance: [''],
       royalty: [''],
       ytd_sales: [''],
       notes: [''],
-      pubdate: ['', Validators.required]
+      pubdate: ['', Validators.required],
+      royaltyper: [''],
+      authorNames: [[], Validators.required],  // Require at least one author
     })
 
     this.route.params.subscribe(params => {
@@ -56,6 +80,9 @@ export class BookDetailComponent implements OnInit{
 
   ngOnInit(): void {
     this.loadBookDetails();
+    this.fetchAuthors();
+    this.fetchPublishers();
+    this.updateFormControlState();
   }
 
   loadBookDetails(): void{
@@ -73,7 +100,9 @@ export class BookDetailComponent implements OnInit{
           royalty: this.book.royalty,
           ytd_sales: this.book.ytd_sales,
           notes: this.book.notes,
-          pubdate: this.book.pubdate
+          pubdate: this.book.pubdate,
+          royaltyper: this.book.royaltyper,
+          authorNames: this.book.authorNames
         });
       },
       error => {
@@ -82,10 +111,62 @@ export class BookDetailComponent implements OnInit{
     );
   }
 
+  fetchAuthors(): void {
+    this.authorsService.getAuthors().subscribe(
+      (data) => {
+        this.authors = data.map((author: Author) => ({
+          ...author,
+          fullName: `${author.au_fname} ${author.au_lname}`
+        }));
+      },
+      (error) => {
+        console.error('Error fetching authors:', error);
+      }
+    );
+  }
+
+  fetchPublishers(): void {
+    this.publishersService.getPublishers().subscribe(
+      (data: Publisher[]) => {
+        this.publishers = data;
+      },
+      (error) => {
+        console.error('Error fetching publishers:', error);
+      }
+    )
+  }
+
   toggleEditMode(): void{
     this.editMode = !this.editMode;
-    if (!this.editMode) {
-      this.bookForm.patchValue(this.book);
+    this.updateFormControlState();
+  }
+
+  // Update form controls' enabled/disabled state based on edit mode
+  updateFormControlState(): void {
+    if (this.editMode) {
+      this.bookForm.get('title')?.enable();
+      this.bookForm.get('type')?.enable();
+      this.bookForm.get('price')?.enable();
+      this.bookForm.get('authorNames')?.enable();
+      this.bookForm.get('royaltyper')?.enable();
+      this.bookForm.get('pub_id')?.enable();
+      this.bookForm.get('advance')?.enable();
+      this.bookForm.get('royalty')?.enable();
+      this.bookForm.get('ytd_sales')?.enable();
+      this.bookForm.get('notes')?.enable();
+      this.bookForm.get('pubdate')?.enable();
+    } else {
+      this.bookForm.get('title')?.disable();
+      this.bookForm.get('type')?.disable();
+      this.bookForm.get('price')?.disable();
+      this.bookForm.get('authorNames')?.disable();
+      this.bookForm.get('royaltyper')?.disable();
+      this.bookForm.get('pub_id')?.disable();
+      this.bookForm.get('advance')?.disable();
+      this.bookForm.get('royalty')?.disable();
+      this.bookForm.get('ytd_sales')?.disable();
+      this.bookForm.get('notes')?.disable();
+      this.bookForm.get('pubdate')?.disable();
     }
   }
 

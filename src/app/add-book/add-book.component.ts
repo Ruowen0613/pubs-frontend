@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BooksService } from '../book.service';
 import { AuthorsService } from '../author.service';
@@ -10,8 +10,11 @@ import { Publisher } from '../publisher.interface';
 import { Observable, map, startWith } from 'rxjs';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 import { MatAutocompleteModule, MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { MatOptionModule } from '@angular/material/core';
+import { MatDatepickerModule, matDatepickerAnimations } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 
 @Component({
@@ -24,7 +27,10 @@ import { MatOptionModule } from '@angular/material/core';
     MatFormFieldModule,
     MatInputModule,
     MatAutocompleteModule,
-    MatOptionModule
+    MatOptionModule,
+    MatSelectModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
   templateUrl: './add-book.component.html',
   styleUrls: ['./add-book.component.css']
@@ -33,9 +39,10 @@ export class AddBookComponent implements OnInit{
   addBookForm: FormGroup;
   authors: Author[] = [];
   publishers: Publisher[] = [];
-  filteredAuthors: Observable<Author[]> | undefined;
+  //filteredAuthors: Observable<Author[]> | undefined;
   authorNotFound = false;
   dropdownInteracted = false;
+  selectedAuthors: Author[] = []; // Array to hold selected authors
 
   @ViewChild(MatAutocompleteTrigger) autoTrigger: MatAutocompleteTrigger | undefined;
 
@@ -57,18 +64,17 @@ export class AddBookComponent implements OnInit{
       ytd_sales: [''],
       notes: [''],
       pubdate: [new Date().toISOString().split('T')[0], Validators.required], // Default to current date
-      authorName: ['', Validators.required],
-      au_ord: [''],
-      royaltyper: ['']
+      royaltyper: [''],
+      authorNames: [[], Validators.required],  // Require at least one author
     });
   }
   ngOnInit(): void {
     this.fetchAuthors();
     this.fetchPublishers();
-    this.filteredAuthors = this.addBookForm.get('authorName')?.valueChanges.pipe(
-      startWith(''),
-      map(value => this._filterAuthors(value))
-    );
+    // this.filteredAuthors = this.addBookForm.get('authorName')?.valueChanges.pipe(
+    //   startWith(''),
+    //   map(value => this._filterAuthors(value))
+    // );
   }
 
 
@@ -88,7 +94,7 @@ export class AddBookComponent implements OnInit{
 
   fetchPublishers(): void {
     this.publishersService.getPublishers().subscribe(
-      (data) => {
+      (data: Publisher[]) => {
         this.publishers = data;
       },
       (error) => {
@@ -97,11 +103,21 @@ export class AddBookComponent implements OnInit{
     )
   }
 
+  get authorsControl() {
+    return this.addBookForm.get('authors') as FormArray;
+  }
+  
+  onAuthorSelectionChange(event: any): void {
+    const selectedIds = event.value;
+    this.selectedAuthors = this.authors.filter(author => selectedIds.includes(author.au_id));
+  }
+  
   /*onAuthorSelected(event: any): void {
     //find returns matched object
     //const selectedAuthor = this.authors.find(author => author.fullName === event.option.value);
   }*/
 
+    
   private _filterAuthors(value: string): any[] {
     const filterValue = value.toLowerCase();
     return this.authors.filter(author => author.fullName?.toLowerCase().includes(filterValue));

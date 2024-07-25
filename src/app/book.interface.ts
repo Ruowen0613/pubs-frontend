@@ -11,5 +11,7 @@ export interface Book {
     ytd_sales: number;
     notes: string;
     pubdate: Date;
+    royaltyper: number;
+    authorNames: string[];
 }
   

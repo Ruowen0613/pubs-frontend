@@ -1,71 +1,103 @@
-<mat-toolbar>
-    <h2>Book Detail</h2>
-    <button mat-icon (click)="toggleEditMode()" class="edit-button">
-      {{ editMode ? 'Cancel' : 'Edit' }}
-    </button>
-</mat-toolbar>
+<h3 style="text-align: center;">{{ book.title }}</h3>
+<button mat-raised-button (click)="toggleEditMode()" color="primary" class="edit-button">
+  {{ editMode ? 'Cancel' : 'Edit' }}
+</button>
 
+<form [formGroup]="bookForm" (ngSubmit)="saveBook()" class="form-container">
+  <!-- ID -->
+  <mat-form-field appearance="fill" class="custom-form-field">
+    <mat-label>ID</mat-label>
+    <input matInput id="title_id" name="title_id" formControlName="title_id" class="my-custom-class">
+  </mat-form-field>
 
-<form  [formGroup]="bookForm" (ngSubmit)="saveBook()">
-  <div>
-    <label for="title_id">ID:</label>
-    <input *ngIf="editMode" type="text" id="title_id" name="title_id" formControlName="title_id">
-    <span *ngIf="!editMode">{{ book.title_id }}</span>
-  </div>
-  <div>
-    <label for="title">Title:</label>
-    <input *ngIf="editMode" type="text" id="title" formControlName="title">
-    <span *ngIf="!editMode">{{ book.title }}</span>
-    <div *ngIf="editMode && bookForm.get('title')?.invalid && (bookForm.get('title')?.dirty || bookForm.get('title')?.touched)">
-      <div *ngIf="bookForm.get('title')?.errors?.['required']" class="error-message">Title is required.</div>
-    </div>
-  </div>
-  <div>
-    <label for="type">Type:</label>
-    <input *ngIf="editMode" type="text" id="type" formControlName="type">
-    <span *ngIf="!editMode">{{ book.type }}</span>
-    <div *ngIf="editMode && bookForm.get('type')?.invalid && (bookForm.get('type')?.dirty || bookForm.get('type')?.touched)">
-      <div *ngIf="bookForm.get('type')?.errors?.['required']" class="error-message">Type is required.</div>
-    </div>
-  </div>
-  <div>
-    <label for="pub_id">Publisher ID:</label>
-    <input *ngIf="editMode" type="text" id="pub_id" formControlName="pub_id">
-    <span *ngIf="!editMode">{{ book.pub_id }}</span>
-  </div>
-  <div>
-    <label for="price">Price:</label>
-    <input *ngIf="editMode" type="text" id="price" formControlName="price">
-    <span *ngIf="!editMode">{{ book.price }}</span>
-  </div>
-  <div>
-    <label for="advance">Advance:</label>
-    <input *ngIf="editMode" type="text" id="advance" formControlName="advance">
-    <span *ngIf="!editMode">{{ book.advance }}</span>
-  </div>
-  <div>
-    <label for="royalty">Royalty:</label>
-    <input *ngIf="editMode" type="text" id="royalty" formControlName="royalty">
-    <span *ngIf="!editMode">{{ book.royalty }}</span>
-  </div>
-  <div>
-    <label for="ytd_sales">Year-to-date sales:</label>
-    <input *ngIf="editMode" type="text" id="ytd_sales" formControlName="ytd_sales">
-    <span *ngIf="!editMode">{{ book.ytd_sales }}</span>
-  </div>
-  <div>
-    <label for="notes">Notes:</label>
-    <input *ngIf="editMode" type="text" id="notes" formControlName="notes">
-    <span *ngIf="!editMode">{{ book.notes }}</span>
-  </div>
-  <div>
-    <label for="pubdate">Pubdate:</label>
-    <input *ngIf="editMode" type="text" id="pubdate" formControlName="pubdate">
-    <span *ngIf="!editMode">{{ book.pubdate }}</span>
-    <div *ngIf="editMode && bookForm.get('pubdate')?.invalid && (bookForm.get('pubdate')?.dirty || bookForm.get('pubdate')?.touched)">
-      <div *ngIf="bookForm.get('pubdate')?.errors?.['required']" class="error-message">Pubdate is required.</div>
-    </div>
-  </div>
+  <!-- Title -->
+  <mat-form-field appearance="fill" class="custom-form-field">
+    <mat-label>Title</mat-label>
+    <input matInput id="title" formControlName="title">
+    <mat-error *ngIf="bookForm.get('title')?.invalid && (bookForm.get('title')?.dirty || bookForm.get('title')?.touched)">
+      Title is required.
+    </mat-error>
+  </mat-form-field>
 
-  <button *ngIf="editMode" type="submit">Save</button>
+  <!-- Type -->
+  <mat-form-field appearance="fill" class="custom-form-field">
+    <mat-label>Type</mat-label>
+    <input matInput id="type" formControlName="type">
+    <mat-error *ngIf="bookForm.get('type')?.invalid && (bookForm.get('type')?.dirty || bookForm.get('type')?.touched)">
+      Type is required.
+    </mat-error>
+  </mat-form-field>
+
+  <!-- Price -->
+  <mat-form-field appearance="fill" class="custom-form-field">
+    <mat-label>Price</mat-label>
+    <input matInput type="number" id="price" formControlName="price">
+  </mat-form-field>
+
+  <!-- Authors -->
+  <mat-form-field appearance="fill" class="custom-form-field">
+    <mat-label>Authors (select names in order)</mat-label>
+    <mat-select formControlName="authorNames" multiple>
+      <mat-option *ngFor="let author of authors" [value]="author.fullName">
+        {{ author.fullName }}
+      </mat-option>
+    </mat-select>
+    <mat-error *ngIf="bookForm.get('authorNames')?.invalid && (bookForm.get('authorNames')?.dirty || bookForm.get('authorNames')?.touched)">
+      <ng-container *ngIf="bookForm.get('authorNames')?.errors?.['required']">At least one author is required.</ng-container>
+    </mat-error>
+  </mat-form-field>
+
+  <!-- Royalty Percentage -->
+  <mat-form-field appearance="fill" class="custom-form-field">
+    <mat-label>Royalty Percentage</mat-label>
+    <input matInput type="number" id="royaltyper" formControlName="royaltyper">
+  </mat-form-field>
+
+  <!-- Publisher ID -->
+  <mat-form-field appearance="fill" class="custom-form-field">
+    <mat-label>Publisher</mat-label>
+    <mat-select id="pub_id" formControlName="pub_id">
+      <mat-option *ngFor="let publisher of publishers" [value]="publisher.pub_id">
+        {{ publisher.pub_id }} - {{ publisher.pub_name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <!-- Advance -->
+  <mat-form-field appearance="fill" class="custom-form-field">
+    <mat-label>Advance</mat-label>
+    <input matInput type="number" id="advance" formControlName="advance">
+  </mat-form-field>
+
+  <!-- Royalty -->
+  <mat-form-field appearance="fill" class="custom-form-field">
+    <mat-label>Royalty</mat-label>
+    <input matInput type="number" id="royalty" formControlName="royalty">
+  </mat-form-field>
+
+  <!-- Year-to-date Sales -->
+  <mat-form-field appearance="fill" class="custom-form-field">
+    <mat-label>Year-to-date Sales</mat-label>
+    <input matInput type="number" id="ytd_sales" formControlName="ytd_sales">
+  </mat-form-field>
+
+  <!-- Notes -->
+  <mat-form-field appearance="fill" class="custom-form-field">
+    <mat-label>Notes</mat-label>
+    <input matInput id="notes" formControlName="notes">
+  </mat-form-field>
+
+  <!-- Pubdate -->
+  <mat-form-field appearance="fill" class="custom-form-field">
+    <mat-label>Pubdate</mat-label>
+    <input matInput [matDatepicker]="picker" id="pubdate" formControlName="pubdate">
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+    <mat-error *ngIf="bookForm.get('pubdate')?.invalid && (bookForm.get('pubdate')?.dirty || bookForm.get('pubdate')?.touched)">
+      Pubdate is required.
+    </mat-error>
+  </mat-form-field>
+
+  <!-- Save Button -->
+  <button *ngIf="editMode" mat-raised-button type="submit" color="primary">Save</button>
 </form>
