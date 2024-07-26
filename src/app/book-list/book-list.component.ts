@@ -8,6 +8,13 @@ import { Book } from '../book.interface';
 import { BooksService } from '../book.service';
 import { Router } from '@angular/router';
 import { RouterModule } from '@angular/router';
+import { MatSort } from '@angular/material/sort';
+import { MatInputModule } from '@angular/material/input';
+import { MatSortModule } from '@angular/material/sort';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-book-list',
@@ -19,18 +26,30 @@ import { RouterModule } from '@angular/router';
     MatPaginator,
     MatTableModule,
     RouterModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatInputModule,
+    MatSortModule,
+    MatToolbarModule,
+    MatFormFieldModule,
+    CommonModule,
+    FormsModule
   ],
   templateUrl: './book-list.component.html',
   styleUrl: './book-list.component.css'
 })
 export class BookListComponent implements OnInit{
   books = new MatTableDataSource<Book>();
+  searchQuery: string = '';
+  // displayedColumns : string[] = [
+  //   'title_id', 'title', 'type', 'pub_id', 'price', 
+  //   'royalty', 'ytd_sales', 'notes', 'pubdate', 'actions'
+  // ];
   displayedColumns : string[] = [
-    'title_id', 'title', 'type', 'pub_id', 'price', 
-    'royalty', 'ytd_sales', 'notes', 'pubdate', 'actions'
+    'title', 'type', 'price', 'ytd_sales', 'notes', 'pubdate', 'actions'
   ];
+
   @ViewChild(MatPaginator) paginator?: MatPaginator;
+  @ViewChild(MatSort) sort?: MatSort; // Add MatSort for sorting
 
   constructor(private booksSevice : BooksService, private router : Router) {}
 
@@ -43,8 +62,12 @@ export class BookListComponent implements OnInit{
     .subscribe(
       (data : Book[]) => {
         this.books.data = data;
+        this.applyFilter(); // Apply current filter after fetching books
         if (this.paginator) {
           this.books.paginator = this.paginator;
+        }
+        if (this.sort) {
+          this.books.sort = this.sort;
         }
       },
       (error) => {
@@ -74,5 +97,21 @@ export class BookListComponent implements OnInit{
         }
       );
     }
+  }
+
+  applyFilter(): void {
+    this.books.filter = this.searchQuery.trim().toLowerCase();
+    if (this.books.paginator) {
+      this.books.paginator.firstPage();
+    }
+  }
+
+  performSearch(): void {
+    this.fetchBooks(); // Perform search by fetching books again
+  }
+
+  clearSearch(): void {
+    this.searchQuery = '';
+    this.books.filter = ''; // Clear the filter
   }
 }

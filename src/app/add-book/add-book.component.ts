@@ -16,7 +16,6 @@ import { MatOptionModule } from '@angular/material/core';
 import { MatDatepickerModule, matDatepickerAnimations } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 
-
 @Component({
   selector: 'app-add-book',
   standalone: true,
@@ -42,7 +41,7 @@ export class AddBookComponent implements OnInit{
   //filteredAuthors: Observable<Author[]> | undefined;
   authorNotFound = false;
   dropdownInteracted = false;
-  selectedAuthors: Author[] = []; // Array to hold selected authors
+  selectedAuthors: string[] = []; // Array to hold selected authors
 
   @ViewChild(MatAutocompleteTrigger) autoTrigger: MatAutocompleteTrigger | undefined;
 
@@ -102,15 +101,37 @@ export class AddBookComponent implements OnInit{
       }
     )
   }
+  // Called whenever the selection changes
+  onSelectionChange(selectedValues: string[]) {
+    this.selectedAuthors = this.updateSelectionOrder(selectedValues, this.selectedAuthors);
+  }
 
-  get authorsControl() {
-    return this.addBookForm.get('authors') as FormArray;
+  // Maintain selection order
+  updateSelectionOrder(newSelections: string[], currentSelections: string[]): string[] {
+    // Merge new selections, maintaining the order
+    const selectedSet = new Set(currentSelections);
+
+    newSelections.forEach((selection) => {
+      if (!selectedSet.has(selection)) {
+        selectedSet.add(selection);
+        currentSelections.push(selection);
+      }
+    });
+
+    this.selectedAuthors = currentSelections.filter((selection) => newSelections.includes(selection));
+    this.addBookForm.get('authorNames')?.setValue(this.selectedAuthors);
+    return this.selectedAuthors;
   }
+
+
+  // get authorsControl() {
+  //   return this.addBookForm.get('authors') as FormArray;
+  // }
   
-  onAuthorSelectionChange(event: any): void {
-    const selectedIds = event.value;
-    this.selectedAuthors = this.authors.filter(author => selectedIds.includes(author.au_id));
-  }
+  // onAuthorSelectionChange(event: any): void {
+  //   const selectedIds = event.value;
+  //   this.selectedAuthors = this.authors.filter(author => selectedIds.includes(author.au_id));
+  // }
   
   /*onAuthorSelected(event: any): void {
     //find returns matched object
@@ -118,27 +139,27 @@ export class AddBookComponent implements OnInit{
   }*/
 
     
-  private _filterAuthors(value: string): any[] {
-    const filterValue = value.toLowerCase();
-    return this.authors.filter(author => author.fullName?.toLowerCase().includes(filterValue));
-  }
+  // private _filterAuthors(value: string): any[] {
+  //   const filterValue = value.toLowerCase();
+  //   return this.authors.filter(author => author.fullName?.toLowerCase().includes(filterValue));
+  // }
 
-  onDropdownInteraction() {
-    this.dropdownInteracted = true;
-    setTimeout(() => this.dropdownInteracted = false, 100); // Reset flag after a short delay
-  }
+  // onDropdownInteraction() {
+  //   this.dropdownInteracted = true;
+  //   setTimeout(() => this.dropdownInteracted = false, 100); // Reset flag after a short delay
+  // }
 
-  onDropdownFocus(): void {
-    this.addBookForm.get('authorName')?.updateValueAndValidity();
-  }
+  // onDropdownFocus(): void {
+  //   this.addBookForm.get('authorName')?.updateValueAndValidity();
+  // }
 
-  //check whether the input authorname matches any of the full name in authors list
-  onAuthorInput() {
-    const authorName = this.addBookForm.get('authorName')?.value;
-    //some returns a boolean
-    const exists = this.authors.some(author => author.fullName!.toLowerCase() === authorName.toLowerCase());
-    this.authorNotFound = authorName && !exists && !this.dropdownInteracted;
-  }
+  // //check whether the input authorname matches any of the full name in authors list
+  // onAuthorInput() {
+  //   const authorName = this.addBookForm.get('authorName')?.value;
+  //   //some returns a boolean
+  //   const exists = this.authors.some(author => author.fullName!.toLowerCase() === authorName.toLowerCase());
+  //   this.authorNotFound = authorName && !exists && !this.dropdownInteracted;
+  // }
 
   navigateToAddAuthor() {
     this.router.navigate(['/add-author'], { queryParams: { redirectTo: 'add-book' } });

@@ -38,7 +38,7 @@
   <!-- Authors -->
   <mat-form-field appearance="fill" class="custom-form-field">
     <mat-label>Authors (select names in order)</mat-label>
-    <mat-select formControlName="authorNames" multiple>
+    <mat-select formControlName="authorNames" multiple (selectionChange)="onSelectionChange($event.value)">
       <mat-option *ngFor="let author of authors" [value]="author.fullName">
         {{ author.fullName }}
       </mat-option>
@@ -47,6 +47,15 @@
       <ng-container *ngIf="addBookForm.get('authorNames')?.errors?.['required']">At least one author is required.</ng-container>
     </mat-error>
   </mat-form-field>
+
+  <div>
+    <span>Selected Authors:</span>
+    <ul>
+      <li *ngFor="let author of selectedAuthors; let i = index">
+        {{ i + 1 }}. {{ author }}
+      </li>  
+    </ul>
+  </div>
 
   <!-- Royalty Percentage  -->
     <mat-form-field appearance="fill" class="custom-form-field">

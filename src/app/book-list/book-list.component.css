@@ -1,23 +1,63 @@
 /* src/app/author-list/author-list.component.css */
 h1 {
-    font-family: Arial, sans-serif; 
-    font-size: 36px; 
-    font-weight: bold; 
-    text-align: center; 
+    font-family: Arial, sans-serif;
+    font-size: 36px;
+    font-weight: bold;
+    text-align: center;
 }
 
 .add-book-container {
     text-align: right;
     margin-bottom: 20px;
 }
-  
+
+.search-container {
+    display: flex;
+    align-items: stretch;
+    margin-top: 20px;
+}
+
+.search-bar {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.search-button {
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.search-button:hover {
+    background-color: #07284b;
+}
+
+.clear-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    font-size: 15px;
+    color: #888;
+    padding: 4px;
+}
+
+.clear-button:hover {
+    color: #333;
+}
+
+
 .add-book-button {
     padding: 10px 20px;
     border-radius: 4px;
     font-size: 16px;
     cursor: pointer;
 }
-  
+
 .add-book-button:hover {
     background-color: #07284b;
 }
@@ -26,14 +66,15 @@ h1 {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
-  }
-  
-.book-table th, .book-table td {
+}
+
+.book-table th,
+.book-table td {
     border: 1px solid #ddd;
     padding: 8px;
     text-align: left;
 }
-  
+
 .book-table th {
     background-color: #f2f2f2;
 }
