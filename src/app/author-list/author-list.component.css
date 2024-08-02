@@ -37,3 +37,15 @@ h1 {
 .author-table th {
     background-color: #f2f2f2;
 }
+
+.mat-mdc-row:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    /* Light grey background on hover */
+}
+
+.mat-mdc-row:hover .mat-mdc-cell {
+    border-color: rgba(0, 0, 0, 0.2);
+    /* Change border color */
+    color: #333;
+    /* Darker text color for better contrast */
+}

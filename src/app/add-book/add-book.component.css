@@ -38,3 +38,8 @@ mat-form-field.custom-form-field {
     background-color: #f9f9f9;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
+
+input {
+    padding: .5em;
+    font-size: 1em;
+}

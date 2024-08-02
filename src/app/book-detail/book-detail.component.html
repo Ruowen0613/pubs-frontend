@@ -14,7 +14,8 @@
   <mat-form-field appearance="fill" class="custom-form-field">
     <mat-label>Title</mat-label>
     <input matInput id="title" formControlName="title">
-    <mat-error *ngIf="bookForm.get('title')?.invalid && (bookForm.get('title')?.dirty || bookForm.get('title')?.touched)">
+    <mat-error
+      *ngIf="bookForm.get('title')?.invalid && (bookForm.get('title')?.dirty || bookForm.get('title')?.touched)">
       Title is required.
     </mat-error>
   </mat-form-field>
@@ -42,17 +43,30 @@
         {{ author.fullName }}
       </mat-option>
     </mat-select>
-    <mat-error *ngIf="bookForm.get('authorNames')?.invalid && (bookForm.get('authorNames')?.dirty || bookForm.get('authorNames')?.touched)">
-      <ng-container *ngIf="bookForm.get('authorNames')?.errors?.['required']">At least one author is required.</ng-container>
+    <mat-error
+      *ngIf="bookForm.get('authorNames')?.invalid && (bookForm.get('authorNames')?.dirty || bookForm.get('authorNames')?.touched)">
+      <ng-container *ngIf="bookForm.get('authorNames')?.errors?.['required']">At least one author is
+        required.</ng-container>
     </mat-error>
   </mat-form-field>
 
   <div>
     <span>Authors List:</span>
     <ul>
-      <li *ngFor="let author of selectedAuthors; let i = index">
-        {{ i + 1 }}. {{ author }}
-      </li>  
+      <li *ngFor="let authorName of selectedAuthors; let i = index">
+        {{ i + 1 }}.
+        <ng-container *ngIf="!editMode; else editTemplate">
+          <a
+            *ngIf="authorNameToIdMap[authorName] !== undefined"
+            [routerLink]="['/edit-author', authorNameToIdMap[authorName]]"
+          >
+            {{ authorName }}
+          </a>
+        </ng-container>
+        <ng-template #editTemplate>
+          {{ authorName }}
+        </ng-template>
+      </li>
     </ul>
   </div>
 
@@ -103,7 +117,8 @@
     <input matInput [matDatepicker]="picker" id="pubdate" formControlName="pubdate">
     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-datepicker #picker></mat-datepicker>
-    <mat-error *ngIf="bookForm.get('pubdate')?.invalid && (bookForm.get('pubdate')?.dirty || bookForm.get('pubdate')?.touched)">
+    <mat-error
+      *ngIf="bookForm.get('pubdate')?.invalid && (bookForm.get('pubdate')?.dirty || bookForm.get('pubdate')?.touched)">
       Pubdate is required.
     </mat-error>
   </mat-form-field>

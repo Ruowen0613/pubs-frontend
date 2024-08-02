@@ -1,80 +1,84 @@
 .edit-button {
-    background-color: #007bff;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    font-size: 16px;
-    cursor: pointer;
-    margin-left: 50px;
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-left: 50px;
 }
 
-input, span {
-    border: none;
-    border-bottom: 2px solid #ccc;
-    padding: 4px 0;
-    display: inline-block;
-    width: calc(100% - 8px); /* Adjust the width so that it fits well with padding */
-    box-sizing: border-box; /* Ensures padding doesn't affect the total width */
-  }
-  
-  input:focus {
-    border-bottom: 2px solid #007bff; /* Changes border color when focused */
-    outline: none; /* Removes default outline */
-  }
-  
+input,
+span {
+  border: none;
+  border-bottom: 2px solid #ccc;
+  padding: 4px 0;
+  display: inline-block;
+  width: calc(100% - 8px);
+  /* Adjust the width so that it fits well with padding */
+  box-sizing: border-box;
+  /* Ensures padding doesn't affect the total width */
+}
+
+input:focus {
+  border-bottom: 2px solid #007bff;
+  /* Changes border color when focused */
+  outline: none;
+  /* Removes default outline */
+}
+
 
 .error-message {
-    color: red;
-    font-size: 0.9em;
-    margin-top: 0.5em;
+  color: red;
+  font-size: 0.9em;
+  margin-top: 0.5em;
 }
 
 form {
-    max-width: 500px;
-    margin: 0 auto;
-    padding: 1em;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #f9f9f9;
-  }
-  
-  div {
-    margin-bottom: 1em;
-  }
-  
-  label {
-    margin-bottom: .5em;
-    color: #333333;
-    display: block;
-  }
-  
-  input {
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-    padding: .5em;
-    font-size: 1em;
-    width: 100%;
-  }
-  
-  button {
-    padding: 0.7em;
-    color: #fff;
-    background-color: #007BFF;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1em;
-    display: block; /* Ensures the button takes up full width */
-    margin: 0 auto; /* Centers the button horizontally */
-    width: fit-content; /* Sizes the button to its content */
-  }
-  
-  button:hover {
-    background-color: #0056b3;
-  }
-  
-  input[type="checkbox"] {
-    transform: scale(2);  
-  }
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 1em;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+div {
+  margin-bottom: 1em;
+}
+
+label {
+  margin-bottom: .5em;
+  color: #333333;
+  display: block;
+}
+
+input {
+  padding: .5em;
+  font-size: 1em;
+}
+
+button {
+  padding: 0.7em;
+  color: #fff;
+  background-color: #007BFF;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1em;
+  display: block;
+  /* Ensures the button takes up full width */
+  margin: 0 auto;
+  /* Centers the button horizontally */
+  width: fit-content;
+  /* Sizes the button to its content */
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+input[type="checkbox"] {
+  transform: scale(2);
+}

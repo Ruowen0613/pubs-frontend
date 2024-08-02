@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, RouterModule } from '@angular/router';
 import { BooksService } from '../book.service';
 import { PublishersService } from '../publisher.service';
 import { AuthorsService } from '../author.service';
@@ -19,6 +19,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { Router } from '@angular/router';
 import { Publisher } from '../publisher.interface';
 import { Author } from '../author.interface';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-book-detail',
@@ -47,9 +48,10 @@ export class BookDetailComponent implements OnInit {
   bookForm!: FormGroup;
   bookId !: string;
   editMode: boolean = false;
-  authors: Author[] = [];
+  authors: (Author & { fullName: string })[] = [];
   publishers: Publisher[] = [];
   selectedAuthors: string[] = [];
+  authorNameToIdMap: { [key: string]: number } = {};
 
   constructor(
     private formBuilder: FormBuilder,
@@ -84,6 +86,12 @@ export class BookDetailComponent implements OnInit {
     this.fetchAuthors();
     this.fetchPublishers();
     this.updateFormControlState();
+     // Scroll to top on navigation end
+     this.router.events
+     .pipe(filter((event) => event instanceof NavigationEnd))
+     .subscribe(() => {
+       window.scrollTo(0, 0);
+     });
   }
 
   loadBookDetails(): void {
@@ -120,6 +128,11 @@ export class BookDetailComponent implements OnInit {
           ...author,
           fullName: `${author.au_fname} ${author.au_lname}`
         }));
+        // Create a map for quick lookup
+        this.authorNameToIdMap = this.authors.reduce((map, author) => {
+          map[author.fullName || ''] = author.au_id;
+          return map;
+        }, {} as { [key: string]: number });
       },
       (error) => {
         console.error('Error fetching authors:', error);

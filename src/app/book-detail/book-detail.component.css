@@ -33,3 +33,8 @@ mat-form-field.custom-form-field {
     width: fit-content; /* Sizes the button to its content */
   }
   
+  input {
+    padding: .5em;
+    font-size: 1em;
+}
+

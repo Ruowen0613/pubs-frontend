@@ -32,12 +32,8 @@ label {
 }
 
 input {
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
     padding: .5em;
     font-size: 1em;
-    width: 100%;
 }
 
 button {
@@ -48,9 +44,10 @@ button {
     border-radius: 5px;
     cursor: pointer;
     font-size: 1em;
-    display: block; /* Ensures the button takes up full width */
-    margin: 0 auto; /* Centers the button horizontally */
-    width: fit-content; /* Sizes the button to its content */
+    display: block;
+    /* Ensures the button takes up full width */
+    margin: 0 auto;
+    /* Centers the button horizontally */
 }
 
 button:hover {
@@ -68,4 +65,13 @@ input[type="checkbox"] {
 mat-form-field.custom-form-field {
     width: 100%;
 }
-  
+
+.form-container {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 1em;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}

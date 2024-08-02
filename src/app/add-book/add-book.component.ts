@@ -36,11 +36,8 @@ import { MatNativeDateModule } from '@angular/material/core';
 })
 export class AddBookComponent implements OnInit{
   addBookForm: FormGroup;
-  authors: Author[] = [];
+  authors: (Author & { fullName: string })[] = [];
   publishers: Publisher[] = [];
-  //filteredAuthors: Observable<Author[]> | undefined;
-  authorNotFound = false;
-  dropdownInteracted = false;
   selectedAuthors: string[] = []; // Array to hold selected authors
 
   @ViewChild(MatAutocompleteTrigger) autoTrigger: MatAutocompleteTrigger | undefined;
@@ -70,10 +67,6 @@ export class AddBookComponent implements OnInit{
   ngOnInit(): void {
     this.fetchAuthors();
     this.fetchPublishers();
-    // this.filteredAuthors = this.addBookForm.get('authorName')?.valueChanges.pipe(
-    //   startWith(''),
-    //   map(value => this._filterAuthors(value))
-    // );
   }
 
 
@@ -123,47 +116,6 @@ export class AddBookComponent implements OnInit{
     return this.selectedAuthors;
   }
 
-
-  // get authorsControl() {
-  //   return this.addBookForm.get('authors') as FormArray;
-  // }
-  
-  // onAuthorSelectionChange(event: any): void {
-  //   const selectedIds = event.value;
-  //   this.selectedAuthors = this.authors.filter(author => selectedIds.includes(author.au_id));
-  // }
-  
-  /*onAuthorSelected(event: any): void {
-    //find returns matched object
-    //const selectedAuthor = this.authors.find(author => author.fullName === event.option.value);
-  }*/
-
-    
-  // private _filterAuthors(value: string): any[] {
-  //   const filterValue = value.toLowerCase();
-  //   return this.authors.filter(author => author.fullName?.toLowerCase().includes(filterValue));
-  // }
-
-  // onDropdownInteraction() {
-  //   this.dropdownInteracted = true;
-  //   setTimeout(() => this.dropdownInteracted = false, 100); // Reset flag after a short delay
-  // }
-
-  // onDropdownFocus(): void {
-  //   this.addBookForm.get('authorName')?.updateValueAndValidity();
-  // }
-
-  // //check whether the input authorname matches any of the full name in authors list
-  // onAuthorInput() {
-  //   const authorName = this.addBookForm.get('authorName')?.value;
-  //   //some returns a boolean
-  //   const exists = this.authors.some(author => author.fullName!.toLowerCase() === authorName.toLowerCase());
-  //   this.authorNotFound = authorName && !exists && !this.dropdownInteracted;
-  // }
-
-  navigateToAddAuthor() {
-    this.router.navigate(['/add-author'], { queryParams: { redirectTo: 'add-book' } });
-  }
 
   saveBook(): void {
     if (this.addBookForm.valid) {

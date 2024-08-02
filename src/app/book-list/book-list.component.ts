@@ -12,7 +12,6 @@ import { MatSort } from '@angular/material/sort';
 import { MatInputModule } from '@angular/material/input';
 import { MatSortModule } from '@angular/material/sort';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatTooltipModule } from '@angular/material/tooltip';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -29,7 +28,6 @@ import { FormsModule } from '@angular/forms';
     MatPaginatorModule,
     MatInputModule,
     MatSortModule,
-    MatToolbarModule,
     MatFormFieldModule,
     CommonModule,
     FormsModule
@@ -37,21 +35,21 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './book-list.component.html',
   styleUrl: './book-list.component.css'
 })
-export class BookListComponent implements OnInit{
+export class BookListComponent implements OnInit {
   books = new MatTableDataSource<Book>();
   searchQuery: string = '';
   // displayedColumns : string[] = [
   //   'title_id', 'title', 'type', 'pub_id', 'price', 
   //   'royalty', 'ytd_sales', 'notes', 'pubdate', 'actions'
   // ];
-  displayedColumns : string[] = [
+  displayedColumns: string[] = [
     'title', 'type', 'price', 'ytd_sales', 'notes', 'pubdate', 'actions'
   ];
 
   @ViewChild(MatPaginator) paginator?: MatPaginator;
   @ViewChild(MatSort) sort?: MatSort; // Add MatSort for sorting
 
-  constructor(private booksSevice : BooksService, private router : Router) {}
+  constructor(private booksSevice: BooksService, private router: Router) { }
 
   ngOnInit(): void {
     this.fetchBooks();
@@ -59,32 +57,36 @@ export class BookListComponent implements OnInit{
 
   fetchBooks(): void {
     this.booksSevice.getBooks()
-    .subscribe(
-      (data : Book[]) => {
-        this.books.data = data;
-        this.applyFilter(); // Apply current filter after fetching books
-        if (this.paginator) {
-          this.books.paginator = this.paginator;
+      .subscribe(
+        (data: Book[]) => {
+          this.books.data = data;
+          this.applyFilter(); // Apply current filter after fetching books
+          
+          //define pagination feature for MatTableDataSource
+          if (this.paginator) {
+            this.books.paginator = this.paginator;
+          }
+
+          //define sorting feature for MatTableDataSource
+          if (this.sort) {
+            this.books.sort = this.sort;
+          }
+        },
+        (error) => {
+          console.error('Error fetching books:', error);
         }
-        if (this.sort) {
-          this.books.sort = this.sort;
-        }
-      },
-      (error) => {
-        console.error('Error fetching books:', error);
-      }
-    )
+      )
   }
 
-  editBook(title_id : number) {
+  editBook(title_id: number) {
     this.router.navigate(['/edit-book', title_id]);
   }
 
-  goToAddBook(): void{
+  goToAddBook(): void {
     this.router.navigate(['/add-book']);
   }
 
-  deleteBook(title_id : string) {
+  deleteBook(title_id: string) {
     if (confirm('Are you sure you want to delete this book?')) {
       this.booksSevice.deleteBook(title_id).subscribe(
         () => {
@@ -100,6 +102,7 @@ export class BookListComponent implements OnInit{
   }
 
   applyFilter(): void {
+    //define filter feature for MatTableDataSource
     this.books.filter = this.searchQuery.trim().toLowerCase();
     if (this.books.paginator) {
       this.books.paginator.firstPage();

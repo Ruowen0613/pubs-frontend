@@ -27,7 +27,7 @@ import { Author } from '../author.interface';
 })
 
 export class AuthorListComponent implements OnInit {
-  authors = new MatTableDataSource<Author>();  // Use MatTableDataSource for Angular Material Table
+  authors = new MatTableDataSource<any>();  // Use MatTableDataSource for Angular Material Table
   displayedColumns: string[] = [
     'au_id', 'name', 'phone', 'address', 
     'city', 'state', 'zip', 'contract', 'actions'
@@ -45,7 +45,11 @@ export class AuthorListComponent implements OnInit {
     this.authorsService.getAuthors()
       .subscribe(
         (data: Author[]) => {
-          this.authors.data = data;
+          this.authors.data = data.map((author: Author) => ({
+            ...author,
+            fullName: `${author.au_fname} ${author.au_lname}`
+          }));
+          
           if (this.paginator) {
             this.authors.paginator = this.paginator;
           }
