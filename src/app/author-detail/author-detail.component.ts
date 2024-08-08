@@ -8,6 +8,10 @@ import { Router } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { Author } from '../author.interface';
+import { Book } from '../book.interface';
+import { BooksService } from '../book.service';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-author-detail',
@@ -18,7 +22,9 @@ import { Author } from '../author.interface';
     ReactiveFormsModule,
     FormsModule,
     MatButtonModule,
-    MatToolbarModule
+    MatToolbarModule,
+    MatGridListModule,
+    MatCardModule
   ],
   templateUrl: './author-detail.component.html',
   styleUrl: './author-detail.component.css'
@@ -29,12 +35,14 @@ export class AuthorDetailComponent implements OnInit {
   authorForm: FormGroup;
   authorId!: string;
   editMode: boolean = false;
+  books: any[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private authorService: AuthorsService
+    private authorService: AuthorsService,
+    private booksService: BooksService
   ) {
     // Initialize form here in the constructor
     this.authorForm = this.formBuilder.group({
@@ -57,6 +65,7 @@ export class AuthorDetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadAuthorDetails();
+    this.loadBooks();
   }
 
   toggleEditMode(): void {
@@ -88,6 +97,19 @@ export class AuthorDetailComponent implements OnInit {
         error => {
           console.error('Error fetching author details:', error);
           // Handle error loading author details
+        }
+      );
+  }
+
+  loadBooks(): void {
+    this.booksService.getBooksByAuthorId(this.authorId)
+      .subscribe(
+        (books: any[]) => {
+          this.books = books;
+          console.log(this.books[0].title);
+        },
+        error => {
+          console.error('Error fetching books:', error);
         }
       );
   }

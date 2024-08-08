@@ -2,17 +2,24 @@
     <span>Author List</span>
   </mat-toolbar>
   <a routerLink="/books">View book list</a>
+
+  <div class="search-container">
+    <input type="text" class="search-bar" placeholder="Enter name" [(ngModel)]="searchQuery"
+      (ngModelChange)="applyFilter()" />
+    <button mat-flat-button class="search-button" (click)="performSearch()">
+      Search
+    </button>
+    <button type="button" class="clear-button" *ngIf="searchQuery" (click)="clearSearch()" aria-label="Clear">
+      <span>Clear</span>
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
   
   <div class="add-author-container">
     <button mat-flat-button color="primary" (click)="goToAddAuthor()" class="add-author-button">Add Author</button>
   </div>
   
   <table mat-table [dataSource]="authors" class="mat-elevation-z8 author-table">
-    <ng-container matColumnDef="au_id">
-      <th mat-header-cell *matHeaderCellDef>ID</th>
-      <td mat-cell *matCellDef="let author">{{author.au_id}}</td>
-    </ng-container>
-  
     <ng-container matColumnDef="name">
       <th mat-header-cell *matHeaderCellDef>Name</th>
       <td mat-cell *matCellDef="let author">

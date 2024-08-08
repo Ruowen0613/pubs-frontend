@@ -1,4 +1,4 @@
-<h3 style="text-align: center;">{{ book.title }}</h3>
+<h3 style="text-align: center; margin-top: 20px;" *ngIf="book">{{ book.title }}</h3>
 <button mat-raised-button (click)="toggleEditMode()" color="primary" class="edit-button">
   {{ editMode ? 'Cancel' : 'Edit' }}
 </button>

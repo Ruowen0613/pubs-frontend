@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 })
 export class BooksService {
 
-  private apiUrl = 'http://localhost:3000/api/books'; 
+  private apiUrl = 'http://localhost:3000/api/books';
   constructor(private http: HttpClient) { } //inject HttpClient module
 
   //get all books
@@ -35,5 +35,9 @@ export class BooksService {
   //delete book by id
   deleteBook(id: string): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${id}`);
+  }
+
+  getBooksByAuthorId(authorId: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/author/${authorId}`);
   }
 }

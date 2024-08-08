@@ -1,40 +1,58 @@
-.edit-button {
-  background-color: #007bff;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 4px;
-  font-size: 16px;
-  cursor: pointer;
-  margin-left: 50px;
+/* Flexbox Container for layout */
+.flex-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 20px;
+  gap: 20px;
 }
 
+/* Author Details Styling */
+.author-details {
+  flex: 1;
+  margin-right: 20px;
+  background-color: #f9f9f9;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Book Grid Styling */
+.book-grid {
+  flex: 1; /* Takes more space */
+}
+
+/* Edit Button Styling */
+.edit-button {
+  margin-right: 50px;
+}
+
+
+/* General Input and Span Styling */
 input,
 span {
   border: none;
   border-bottom: 2px solid #ccc;
   padding: 4px 0;
   display: inline-block;
-  width: calc(100% - 8px);
-  /* Adjust the width so that it fits well with padding */
-  box-sizing: border-box;
-  /* Ensures padding doesn't affect the total width */
+  width: calc(100% - 8px); /* Adjust for padding */
+  box-sizing: border-box; /* Include padding in width */
 }
 
+/* Input Focus Effect */
 input:focus {
-  border-bottom: 2px solid #007bff;
-  /* Changes border color when focused */
-  outline: none;
-  /* Removes default outline */
+  border-bottom: 2px solid #007bff; /* Border on focus */
+  outline: none; /* No outline */
 }
 
-
+/* Error Message Styling */
 .error-message {
   color: red;
   font-size: 0.9em;
   margin-top: 0.5em;
 }
 
+/* Form Styling */
 form {
   max-width: 500px;
   margin: 0 auto;
@@ -44,21 +62,25 @@ form {
   background-color: #f9f9f9;
 }
 
+/* Spacing for each Form Item */
 div {
   margin-bottom: 1em;
 }
 
+/* Label Styling */
 label {
   margin-bottom: .5em;
   color: #333333;
   display: block;
 }
 
+/* Input Styling */
 input {
   padding: .5em;
   font-size: 1em;
 }
 
+/* Button Styling */
 button {
   padding: 0.7em;
   color: #fff;
@@ -67,18 +89,60 @@ button {
   border-radius: 5px;
   cursor: pointer;
   font-size: 1em;
-  display: block;
-  /* Ensures the button takes up full width */
-  margin: 0 auto;
-  /* Centers the button horizontally */
-  width: fit-content;
-  /* Sizes the button to its content */
+  display: block; /* Full width */
+  margin: 0 auto; /* Center button */
+  width: fit-content; /* Fit to content */
 }
 
-button:hover {
-  background-color: #0056b3;
-}
 
+/* Checkbox Scaling */
 input[type="checkbox"] {
   transform: scale(2);
 }
+
+
+mat-card:hover {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Enhance shadow on hover */
+}
+
+mat-card-header {
+  background-color: #f5f5f5; /* Light background for header */
+  font-weight: bold; /* Emphasize title */
+}
+
+mat-card-subtitle {
+  color: #757575; /* Subtitle color for better readability */
+  margin-left: 1em;
+  margin-top: 0.6em;
+}
+
+mat-card-content {
+  padding: 16px; /* Space inside the card content */
+}
+
+mat-card-actions {
+  display: flex;
+  justify-content: flex-end; /* Align actions to the end */
+}
+
+a {
+  text-decoration: none; /* Remove underline from links */
+  color: #3f51b5; /* Material Design primary color */
+  font-weight: bold;
+}
+
+a:hover {
+  text-decoration: underline; /* Add underline on hover for clarity */
+}
+
+/* Table Styling for Author Details */
+table {
+  width: 100%;
+  border-spacing: 8px;
+}
+
+table td {
+  vertical-align: top;
+}
+
+

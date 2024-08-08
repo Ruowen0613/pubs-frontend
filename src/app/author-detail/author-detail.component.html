@@ -1,77 +1,127 @@
-<mat-toolbar>
-    <h2>Author Detail</h2>
-    <button mat-button (click)="toggleEditMode()" class="edit-button">
-      {{ editMode ? 'Cancel' : 'Edit' }}
-    </button>
-</mat-toolbar>
+<h3 style="text-align: center; margin-top: 20px;" *ngIf="author">{{ author.au_fname + ' ' + author.au_lname }}</h3>
+<button mat-raised-button (click)="toggleEditMode()" class="edit-button">
+  {{ editMode ? 'Cancel' : 'Edit' }}
+</button>
 
+<!-- Container for Flexbox layout -->
+<div class="flex-container">
+  <!-- Author Details Section -->
+  <div *ngIf="author"class="author-details">
+    <form [formGroup]="authorForm" (ngSubmit)="saveAuthor()">
+      <table>
+        <tr>
+          <td><label for="au_id">ID:</label></td>
+          <td>
+            <input *ngIf="editMode" type="text" id="au_id" name="au_id" formControlName="au_id">
+            <span *ngIf="!editMode">{{ author.au_id }}</span>
+          </td>
+        </tr>
+        <tr>
+          <td><label for="au_lname">Last Name:</label></td>
+          <td>
+            <input *ngIf="editMode" type="text" id="au_lname" formControlName="au_lname">
+            <span *ngIf="!editMode">{{ author.au_lname }}</span>
+            <div
+              *ngIf="editMode && authorForm.get('au_lname')?.invalid && (authorForm.get('au_lname')?.dirty || authorForm.get('au_lname')?.touched)">
+              <div *ngIf="authorForm.get('au_lname')?.errors?.['required']" class="error-message">Last Name is required.
+              </div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><label for="au_fname">First Name:</label></td>
+          <td>
+            <input *ngIf="editMode" type="text" id="au_fname" formControlName="au_fname">
+            <span *ngIf="!editMode">{{ author.au_fname }}</span>
+            <div
+              *ngIf="editMode && authorForm.get('au_fname')?.invalid && (authorForm.get('au_fname')?.dirty || authorForm.get('au_fname')?.touched)">
+              <div *ngIf="authorForm.get('au_fname')?.errors?.['required']" class="error-message">First Name is
+                required.</div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><label for="phone">Phone:</label></td>
+          <td>
+            <input *ngIf="editMode" type="text" id="phone" formControlName="phone">
+            <span *ngIf="!editMode">{{ author.phone }}</span>
+            <div
+              *ngIf="editMode && authorForm.get('phone')?.invalid && (authorForm.get('phone')?.dirty || authorForm.get('phone')?.touched)">
+              <div *ngIf="authorForm.get('phone')?.errors?.['required']" class="error-message">Phone is required.</div>
+              <div *ngIf="authorForm.get('phone')?.errors?.['maxlength']" class="error-message">Phone must be a maximum
+                of 12 characters long.</div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><label for="address">Address:</label></td>
+          <td>
+            <input *ngIf="editMode" type="text" id="address" formControlName="address">
+            <span *ngIf="!editMode">{{ author.address }}</span>
+          </td>
+        </tr>
+        <tr>
+          <td><label for="city">City:</label></td>
+          <td>
+            <input *ngIf="editMode" type="text" id="city" formControlName="city">
+            <span *ngIf="!editMode">{{ author.city }}</span>
+          </td>
+        </tr>
+        <tr>
+          <td><label for="state">State:</label></td>
+          <td>
+            <input *ngIf="editMode" type="text" id="state" formControlName="state">
+            <span *ngIf="!editMode">{{ author.state }}</span>
+            <div
+              *ngIf="editMode && authorForm.get('state')?.invalid && (authorForm.get('state')?.dirty || authorForm.get('state')?.touched)">
+              <div *ngIf="authorForm.get('state')?.errors?.['maxlength']" class="error-message">State must be 2
+                characters long.</div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><label for="zip">Zip:</label></td>
+          <td>
+            <input *ngIf="editMode" type="text" id="zip" formControlName="zip">
+            <span *ngIf="!editMode">{{ author.zip }}</span>
+            <div
+              *ngIf="editMode && authorForm.get('zip')?.invalid && (authorForm.get('zip')?.dirty || authorForm.get('zip')?.touched)">
+              <div *ngIf="authorForm.get('zip')?.errors?.['pattern']" class="error-message">Zip must be 5 digits.</div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><label for="contract">Contract:</label></td>
+          <td>
+            <input *ngIf="editMode" type="checkbox" id="contract" formControlName="contract">
+            <span *ngIf="!editMode">{{ author.contract ? 'Yes' : 'No' }}</span>
+          </td>
+        </tr>
+      </table>
 
-<form  [formGroup]="authorForm" (ngSubmit)="saveAuthor()">
-  <div>
-    <label for="au_id">ID:</label>
-    <input *ngIf="editMode" type="text" id="au_id" name="au_id" formControlName="au_id">
-    <span *ngIf="!editMode">{{ author.au_id }}</span>
-  </div>
-  <div>
-    <label for="au_lname">Last Name:</label>
-    <input *ngIf="editMode" type="text" id="au_lname" formControlName="au_lname">
-    <span *ngIf="!editMode">{{ author.au_lname }}</span>
-    <div *ngIf="editMode && authorForm.get('au_lname')?.invalid && (authorForm.get('au_lname')?.dirty || authorForm.get('au_lname')?.touched)">
-      <div *ngIf="authorForm.get('au_lname')?.errors?.['required']" class="error-message">Last Name is required.</div>
-    </div>
-  </div>
-  <div>
-    <label for="au_fname">First Name:</label>
-    <input *ngIf="editMode" type="text" id="au_fname" formControlName="au_fname">
-    <span *ngIf="!editMode">{{ author.au_fname }}</span>
-    <div *ngIf="editMode && authorForm.get('au_fname')?.invalid && (authorForm.get('au_fname')?.dirty || authorForm.get('au_fname')?.touched)">
-      <div *ngIf="authorForm.get('au_fname')?.errors?.['required']" class="error-message">First Name is required.</div>
-    </div>
-  </div>
-  <div>
-    <label for="phone">Phone:</label>
-    <input *ngIf="editMode" type="text" id="phone" formControlName="phone">
-    <span *ngIf="!editMode">{{ author.phone }}</span>
-    <div *ngIf="editMode && authorForm.get('phone')?.invalid && (authorForm.get('phone')?.dirty || authorForm.get('phone')?.touched)">
-      <div *ngIf="authorForm.get('phone')?.errors?.['required']" class="error-message">Phone is required.</div>
-      <div *ngIf="authorForm.controls['phone']?.errors?.['maxlength']" class="error-message">Phone must be a maximum of 12 characters long.</div>
-    </div>
-  </div>
-  <div>
-    <label for="address">Address:</label>
-    <input *ngIf="editMode" type="text" id="address" formControlName="address">
-    <span *ngIf="!editMode">{{ author.address }}</span>
-  </div>
-  <div>
-    <label for="city">City:</label>
-    <input *ngIf="editMode" type="text" id="city" formControlName="city">
-    <span *ngIf="!editMode">{{ author.city }}</span>
-  </div>
-  <div>
-    <label for="state">State:</label>
-    <input *ngIf="editMode" type="text" id="state" formControlName="state">
-    <span *ngIf="!editMode">{{ author.state }}</span>
-    <div *ngIf="editMode && authorForm.get('state')?.invalid && (authorForm.get('state')?.dirty || authorForm.get('state')?.touched)">
-        <div *ngIf="authorForm.get('state')?.errors?.['maxlength']" class="error-message">State must be 2 characters long.</div>
-        <div *ngIf="authorForm.controls['phone']?.errors?.['maxlength']" class="error-message">State must be 12 characters long.</div>
-    </div>
-  </div>
-  <div>
-    <label for="zip">Zip:</label>
-    <input *ngIf="editMode" type="text" id="zip" formControlName="zip">
-    <span *ngIf="!editMode">{{ author.zip }}</span>
-    <div *ngIf="editMode && authorForm.get('zip')?.invalid && (authorForm.get('zip')?.dirty || authorForm.get('zip')?.touched)">
-      <div *ngIf="authorForm.get('zip')?.errors?.['pattern']" class="error-message">Zip must be a 5-digit number.</div>
-    </div>
-  </div>
-  <div>
-    <label for="contract">Contract:</label>
-    <input *ngIf="editMode" type="checkbox" id="contract" formControlName="contract">
-    <input *ngIf="!editMode" type="checkbox" id="contract" [checked]="author.contract" disabled>
-    <div *ngIf="editMode && authorForm.get('contract')?.invalid && (authorForm.get('contract')?.dirty || authorForm.get('contract')?.touched)">
-      <div *ngIf="authorForm.get('contract')?.errors?.['required']" class="error-message">Contract is required.</div>
-    </div>
+      <!-- Submit Button -->
+      <button type="submit" *ngIf="editMode">Save</button>
+    </form>
   </div>
 
-  <button *ngIf="editMode" type="submit">Save</button>
-</form>
+  <!-- Book Grid Section (Displayed only if not in edit mode) -->
+  <div class="book-grid" *ngIf="!editMode && books">
+    <mat-grid-list cols="1" rowHeight="2:1" gutterSize="16px">
+      <mat-grid-tile *ngFor="let book of books">
+        <mat-card>
+          <mat-card-header>{{ book.title }}</mat-card-header>
+          <mat-card-subtitle>Type: {{ book.type }}</mat-card-subtitle>
+          <mat-card-content>
+            <p>Year: {{ book.pubdate }}</p>
+            <p>Publisher: {{ book.pub_name }}</p>
+            <p>YTD Sales: {{ book.ytd_sales | number }}</p>
+            <p>Price: ${{ book.price }}</p>
+          </mat-card-content>
+          <mat-card-actions>
+            <a [routerLink]="['/edit-book', book.title_id]">View details</a>
+          </mat-card-actions>
+        </mat-card>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </div>
+</div>

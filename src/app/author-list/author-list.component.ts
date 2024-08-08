@@ -9,6 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { Author } from '../author.interface';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-author-list',
@@ -20,7 +21,8 @@ import { Author } from '../author.interface';
       MatTableModule, 
       MatButtonModule, 
       MatToolbarModule,
-      MatPaginatorModule
+      MatPaginatorModule,
+      FormsModule
   ],
   templateUrl: './author-list.component.html',
   styleUrl: './author-list.component.css'
@@ -29,9 +31,10 @@ import { Author } from '../author.interface';
 export class AuthorListComponent implements OnInit {
   authors = new MatTableDataSource<any>();  // Use MatTableDataSource for Angular Material Table
   displayedColumns: string[] = [
-    'au_id', 'name', 'phone', 'address', 
+    'name', 'phone', 'address', 
     'city', 'state', 'zip', 'contract', 'actions'
   ];
+  searchQuery: string = '';
 
   @ViewChild(MatPaginator) paginator?: MatPaginator;
   
@@ -70,7 +73,7 @@ export class AuthorListComponent implements OnInit {
   }
 
   deleteAuthor(au_id: string): void {
-    if (confirm('Are you sure you want to delete this author?')) {
+    if (confirm('Are you sure you want to delete this author? This will also delete all the books by this author.')) {
       this.authorsService.deleteAuthor(au_id).subscribe(
         () => {
           this.authors.data = this.authors.data.filter((author: any) => author.au_id !== au_id);
@@ -82,6 +85,23 @@ export class AuthorListComponent implements OnInit {
         }
       );
     }
+  }
+
+  applyFilter(): void {
+    //define filter feature for MatTableDataSource
+    this.authors.filter = this.searchQuery.trim().toLowerCase();
+    if (this.authors.paginator) {
+      this.authors.paginator.firstPage();
+    }
+  }
+
+  performSearch(): void {
+    this.fetchAuthors(); // Perform search by fetching books again
+  }
+
+  clearSearch(): void {
+    this.searchQuery = '';
+    this.authors.filter = ''; // Clear the filter
   }
   
 }
