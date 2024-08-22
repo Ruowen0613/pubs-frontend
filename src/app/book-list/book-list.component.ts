@@ -59,6 +59,11 @@ export class BookListComponent implements OnInit {
     this.booksSevice.getBooks()
       .subscribe(
         (data: Book[]) => {
+          data.forEach(book => {
+            if (book.pubdate) {
+              book.pubdate = new Date(book.pubdate).toISOString().split('T')[0];
+            }
+          });
           this.books.data = data;
           this.applyFilter(); // Apply current filter after fetching books
           

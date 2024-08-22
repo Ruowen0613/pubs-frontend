@@ -15,6 +15,7 @@ import { MatAutocompleteModule, MatAutocompleteTrigger } from '@angular/material
 import { MatOptionModule } from '@angular/material/core';
 import { MatDatepickerModule, matDatepickerAnimations } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { Book } from '../book.interface';
 
 @Component({
   selector: 'app-add-book',
@@ -39,6 +40,7 @@ export class AddBookComponent implements OnInit{
   authors: (Author & { fullName: string })[] = [];
   publishers: Publisher[] = [];
   selectedAuthors: string[] = []; // Array to hold selected authors
+  newRoyalTypers: number[] = [];
 
   @ViewChild(MatAutocompleteTrigger) autoTrigger: MatAutocompleteTrigger | undefined;
 
@@ -60,7 +62,7 @@ export class AddBookComponent implements OnInit{
       ytd_sales: [''],
       notes: [''],
       pubdate: [new Date().toISOString().split('T')[0], Validators.required], // Default to current date
-      royaltyper: [''],
+
       authorNames: [[], Validators.required],  // Require at least one author
     });
   }
@@ -116,12 +118,34 @@ export class AddBookComponent implements OnInit{
     return this.selectedAuthors;
   }
 
+  updateRoyalty(i: number, event: Event): void {
+    const target = event.target as HTMLInputElement;
+    if (target) {
+      this.newRoyalTypers[i] = target.valueAsNumber;
+      console.log(this.newRoyalTypers[i]);
+    }
+  }
 
+  // Method to get updated book data including royalties
+  getUpdatedBookData(): Book {
+    const bookData = this.addBookForm.value as Book;
+    return {
+      ...bookData,
+      royalTypers: this.newRoyalTypers
+    };
+  }
+
+  hasError(index: number): boolean {
+    // Check if the value is null or invalid based on your criteria
+    console.log("errpr")
+    return isNaN(this.newRoyalTypers[index]);
+  }
+  
   saveBook(): void {
     if (this.addBookForm.valid) {
-      const bookData = this.addBookForm.value;
-
-      this.booksService.addBook(bookData)
+      const updatedBook = this.getUpdatedBookData();
+      console.log(updatedBook);
+      this.booksService.addBook(updatedBook)
         .subscribe(
           () => {
             alert('Book added successfully');

@@ -10,6 +10,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { Author } from '../author.interface';
 import { FormsModule } from '@angular/forms';
+import { MatSort } from '@angular/material/sort';
+import { MatSortModule } from '@angular/material/sort';
 
 @Component({
   selector: 'app-author-list',
@@ -22,21 +24,23 @@ import { FormsModule } from '@angular/forms';
       MatButtonModule, 
       MatToolbarModule,
       MatPaginatorModule,
-      FormsModule
+      FormsModule,
+      MatSortModule
   ],
   templateUrl: './author-list.component.html',
   styleUrl: './author-list.component.css'
 })
 
 export class AuthorListComponent implements OnInit {
-  authors = new MatTableDataSource<any>();  // Use MatTableDataSource for Angular Material Table
+  authors = new MatTableDataSource<Author>();  // Use MatTableDataSource for Angular Material Table
   displayedColumns: string[] = [
-    'name', 'phone', 'address', 
+    'fullName', 'phone', 'address', 
     'city', 'state', 'zip', 'contract', 'actions'
   ];
   searchQuery: string = '';
 
   @ViewChild(MatPaginator) paginator?: MatPaginator;
+  @ViewChild(MatSort) sort?: MatSort;
   
   constructor(private authorsService: AuthorsService, private router: Router) {}
 
@@ -55,6 +59,9 @@ export class AuthorListComponent implements OnInit {
           
           if (this.paginator) {
             this.authors.paginator = this.paginator;
+          }
+          if (this.sort) {
+            this.authors.sort = this.sort;
           }
         },
         (error) => {

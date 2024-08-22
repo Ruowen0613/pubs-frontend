@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, NavigationEnd, RouterModule } from '@angular/router';
 import { BooksService } from '../book.service';
 import { PublishersService } from '../publisher.service';
@@ -52,6 +52,8 @@ export class BookDetailComponent implements OnInit {
   publishers: Publisher[] = [];
   selectedAuthors: string[] = [];
   authorNameToIdMap: { [key: string]: number } = {};
+  originalRoyalTypers: number[] = [];
+  newRoyalTypers: number[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -72,8 +74,7 @@ export class BookDetailComponent implements OnInit {
       ytd_sales: [''],
       notes: [''],
       pubdate: ['', Validators.required],
-      royaltyper: [''],
-      authorNames: [[], Validators.required],  // Require at least one author
+      authorNames: [[], Validators.required]  // Require at least one author
     })
 
     this.route.params.subscribe(params => {
@@ -86,12 +87,13 @@ export class BookDetailComponent implements OnInit {
     this.fetchAuthors();
     this.fetchPublishers();
     this.updateFormControlState();
-     // Scroll to top on navigation end
-     this.router.events
-     .pipe(filter((event) => event instanceof NavigationEnd))
-     .subscribe(() => {
-       window.scrollTo(0, 0);
-     });
+
+    // Scroll to top on navigation end
+    this.router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe(() => {
+        window.scrollTo(0, 0);
+      });
   }
 
   loadBookDetails(): void {
@@ -99,6 +101,7 @@ export class BookDetailComponent implements OnInit {
       .subscribe(
         (book: Book) => {
           this.book = book;
+
           this.bookForm.patchValue({
             title_id: this.book.title_id,
             title: this.book.title,
@@ -109,11 +112,13 @@ export class BookDetailComponent implements OnInit {
             royalty: this.book.royalty,
             ytd_sales: this.book.ytd_sales,
             notes: this.book.notes,
-            pubdate: this.book.pubdate,
-            royaltyper: this.book.royaltyper,
+            pubdate: this.book.pubdate ? new Date(this.book.pubdate).toISOString().split('T')[0] : '',  // Format the pubdate
             authorNames: this.book.authorNames
           });
           this.selectedAuthors = this.book.authorNames;
+          this.originalRoyalTypers = this.book.royalTypers || [];
+          this.newRoyalTypers = this.book.royalTypers || [];
+          console.log(this.bookForm);
         },
         error => {
           console.error('Error fetching author details:', error);
@@ -163,7 +168,6 @@ export class BookDetailComponent implements OnInit {
       this.bookForm.get('type')?.enable();
       this.bookForm.get('price')?.enable();
       this.bookForm.get('authorNames')?.enable();
-      this.bookForm.get('royaltyper')?.enable();
       this.bookForm.get('pub_id')?.enable();
       this.bookForm.get('advance')?.enable();
       this.bookForm.get('royalty')?.enable();
@@ -175,7 +179,6 @@ export class BookDetailComponent implements OnInit {
       this.bookForm.get('type')?.disable();
       this.bookForm.get('price')?.disable();
       this.bookForm.get('authorNames')?.disable();
-      this.bookForm.get('royaltyper')?.disable();
       this.bookForm.get('pub_id')?.disable();
       this.bookForm.get('advance')?.disable();
       this.bookForm.get('royalty')?.disable();
@@ -207,9 +210,29 @@ export class BookDetailComponent implements OnInit {
     return this.selectedAuthors;
   }
 
+  updateRoyalty(i: number, event: Event): void {
+    const target = event.target as HTMLInputElement;
+    if (target) {
+      this.newRoyalTypers[i] = target.valueAsNumber;
+      console.log(this.newRoyalTypers[i]);
+    }
+  }
+
+  // Method to get updated book data including royalties
+  getUpdatedBookData(): Book {
+    const bookData = this.bookForm.value as Book;
+    return {
+      ...bookData,
+      royalTypers: this.newRoyalTypers
+    };
+  }
+
+  // Method to save the book data
   saveBook(): void {
     if (this.bookForm.valid) {
-      this.booksService.updateBook(this.bookId, this.bookForm.value)
+      const updatedBook = this.getUpdatedBookData();
+      
+      this.booksService.updateBook(this.bookId, updatedBook)
         .subscribe(
           () => {
             alert('Book updated successfully');
@@ -219,7 +242,7 @@ export class BookDetailComponent implements OnInit {
             console.error('Error updating book:', error);
             alert('Failed to update book');
           }
-        )
+        );
     } else {
       alert('Please fill in all required fields correctly.');
     }

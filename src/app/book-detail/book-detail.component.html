@@ -35,47 +35,57 @@
     <input matInput type="number" id="price" formControlName="price">
   </mat-form-field>
 
-  <!-- Authors -->
-  <mat-form-field appearance="fill" class="custom-form-field">
-    <mat-label>Authors (select names in order)</mat-label>
-    <mat-select formControlName="authorNames" multiple (selectionChange)="onSelectionChange($event.value)">
-      <mat-option *ngFor="let author of authors" [value]="author.fullName">
-        {{ author.fullName }}
-      </mat-option>
-    </mat-select>
-    <mat-error
-      *ngIf="bookForm.get('authorNames')?.invalid && (bookForm.get('authorNames')?.dirty || bookForm.get('authorNames')?.touched)">
-      <ng-container *ngIf="bookForm.get('authorNames')?.errors?.['required']">At least one author is
-        required.</ng-container>
-    </mat-error>
-  </mat-form-field>
+  <!-- Authors Multiselect -->
+<mat-form-field appearance="fill" class="custom-form-field">
+  <mat-label>Authors</mat-label>
+  <mat-select 
+    formControlName="authorNames" 
+    multiple 
+    (selectionChange)="onSelectionChange($event.value)">
+    <mat-option *ngFor="let author of authors" [value]="author.fullName">
+      {{author.fullName}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
 
-  <div>
-    <span>Authors List:</span>
-    <ul>
-      <li *ngFor="let authorName of selectedAuthors; let i = index">
-        {{ i + 1 }}.
-        <ng-container *ngIf="!editMode; else editTemplate">
-          <a
-            *ngIf="authorNameToIdMap[authorName] !== undefined"
-            [routerLink]="['/edit-author', authorNameToIdMap[authorName]]"
-          >
-            {{ authorName }}
-          </a>
-        </ng-container>
-        <ng-template #editTemplate>
-          {{ authorName }}
-        </ng-template>
-      </li>
-    </ul>
+<!-- Display Authors List when not in edit mode -->
+<div *ngIf="!editMode">
+  <span>Authors List:</span>
+  <ul>
+    <li *ngFor="let authorName of selectedAuthors; let i = index">
+      {{ i + 1 }}.
+      <ng-container>
+        <a
+          *ngIf="authorNameToIdMap[authorName] !== undefined"
+          [routerLink]="['/edit-author', authorNameToIdMap[authorName]]"
+        >
+          {{ authorName }} 
+        </a>
+        <div>Royalty Percentage: {{originalRoyalTypers[i] }}</div>
+      </ng-container>
+    </li>
+  </ul>
+</div>
+
+<!-- Display Input Boxes for Royalty when in edit mode -->
+<div *ngIf="editMode && selectedAuthors.length > 0">
+  <div *ngFor="let author of selectedAuthors; let i = index">
+    <mat-form-field appearance="fill" class="custom-form-field">
+      <mat-label>{{ author }}</mat-label>
+      <div>
+        <span>Royalty Percentage:</span>
+        <input 
+          matInput
+          type="number" 
+          [value]="newRoyalTypers[i]" 
+          (input)="updateRoyalty(i, $event)"
+          min="0"
+          max="100"
+          placeholder="Enter Royalty Percentage">
+      </div>
+    </mat-form-field>
   </div>
-
-
-  <!-- Royalty Percentage -->
-  <mat-form-field appearance="fill" class="custom-form-field">
-    <mat-label>Royalty Percentage</mat-label>
-    <input matInput type="number" id="royaltyper" formControlName="royaltyper">
-  </mat-form-field>
+</div>
 
   <!-- Publisher ID -->
   <mat-form-field appearance="fill" class="custom-form-field">

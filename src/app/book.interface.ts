@@ -10,8 +10,8 @@ export interface Book {
     royalty: number;
     ytd_sales: number;
     notes: string;
-    pubdate: Date;
-    royaltyper: number;
+    pubdate: string;
+    royalTypers: number[];
     authorNames: string[];
 }
   
